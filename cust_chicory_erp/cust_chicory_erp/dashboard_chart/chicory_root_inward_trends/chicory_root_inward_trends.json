@@ -1,5 +1,5 @@
 {
- "based_on": "inward_date",
+ "based_on": "posting_date",
  "chart_name": "Chicory Root Inward Trends",
  "chart_type": "Sum",
  "color": "#6F3918",
@@ -26,6 +26,6 @@
  "timespan": "Last Year",
  "type": "Bar",
  "use_report_chart": 0,
- "value_based_on": "net_weight_kg",
+ "value_based_on": "net_weight",
  "y_axis": []
 }

@@ -17,7 +17,7 @@ add_to_apps_screen = [
 		"name": "cust_chicory_erp",
 		"logo": "/assets/cust_chicory_erp/images/chicory-logo.svg",
 		"title": "Chicory ERP",
-		"route": "/desk/chicory-food-manufacturing",
+		"route": "/desk/cust-chicory-erp/dashboard-view/Chicory%20Manufacturing",
 		"sequence_id": 3,
 	}
 ]

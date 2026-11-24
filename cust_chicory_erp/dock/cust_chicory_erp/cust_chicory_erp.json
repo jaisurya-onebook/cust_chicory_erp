@@ -9,12 +9,12 @@
    "added": 0,
    "hidden": 0,
    "icon": "factory-soft",
-   "link_to": "Chicory Food Manufacturing",
-   "link_type": "Workspace",
+   "link_to": "Cust Chicory Erp",
+   "link_type": "Sidebar",
    "title": "Chicory Manufacturing"
   }
  ],
- "modified": "2026-11-24 14:22:59.448194",
+ "modified": "2026-11-24 15:10:44.806827",
  "modified_by": "Administrator",
  "name": "cust_chicory_erp",
  "owner": "Administrator",

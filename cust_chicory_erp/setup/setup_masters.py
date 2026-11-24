@@ -388,20 +388,65 @@ def setup_chicory_masters(company=None):
 		})
 		cust.insert(ignore_permissions=True)
 
+	setup_chicory_workers(company)
 	setup_chicory_dock()
 	setup_chicory_dashboard_and_components()
 	setup_chicory_sidebar()
-	setup_chicory_sidebar()
+	setup_chicory_desktop_icon()
 
 	if not frappe.flags.in_test:
 		print(_("Chicory masters setup completed successfully for company: {0}").format(company))
 	return True
 
 
+def setup_chicory_workers(company=None):
+	"""Ensure standard factory worker profiles and designations exist for shop-floor tracking."""
+	if not company:
+		company = frappe.db.get_single_value("Global Defaults", "default_company") or "Chicory Agro Industries Ltd"
+
+	workers = [
+		{"first_name": "Anil Sharma", "designation": "Weighbridge Operator"},
+		{"first_name": "Mahesh Yadav", "designation": "Washing & Drying Operator"},
+		{"first_name": "Ramesh Kumar", "designation": "Roaster Operator"},
+		{"first_name": "Suresh Patel", "designation": "Grinder Operator"},
+		{"first_name": "Dinesh Kumar", "designation": "Packing Line Operator"},
+		{"first_name": "Pooja Verma", "designation": "Quality Control Chemist"},
+	]
+
+	for w in workers:
+		if not frappe.db.exists("Designation", w["designation"]):
+			d = frappe.get_doc({
+				"doctype": "Designation",
+				"designation_name": w["designation"],
+			})
+			d.insert(ignore_permissions=True)
+
+		if not frappe.db.exists("Employee", {"first_name": w["first_name"], "company": company}):
+			emp = frappe.get_doc({
+				"doctype": "Employee",
+				"first_name": w["first_name"],
+				"designation": w["designation"],
+				"company": company,
+				"gender": "Male" if "Verma" not in w["first_name"] else "Female",
+				"date_of_birth": "1992-05-15",
+				"date_of_joining": "2024-01-01",
+				"status": "Active",
+			})
+			emp.insert(ignore_permissions=True)
+
+
 def setup_chicory_dock():
 	"""Ensure Dock document exists for cust_chicory_erp app in Frappe v16 Desk."""
 	if not frappe.db.exists("DocType", "Dock"):
 		return
+	items = [
+		{
+			"link_type": "Sidebar",
+			"link_to": "Cust Chicory Erp",
+			"icon": "factory-soft",
+			"title": "Chicory Manufacturing",
+		}
+	]
 	if not frappe.db.exists("Dock", "cust_chicory_erp"):
 		dock = frappe.get_doc({
 			"doctype": "Dock",
@@ -409,19 +454,49 @@ def setup_chicory_dock():
 			"app": "cust_chicory_erp",
 			"standard": 1,
 			"user": "",
-			"items": [
-				{
-					"link_type": "Workspace",
-					"link_to": "Chicory Food Manufacturing",
-					"icon": "factory-soft",
-					"title": "Chicory Manufacturing",
-				}
-			],
+			"items": items,
 		})
 		dock.flags.ignore_permissions = True
 		dock.flags.ignore_mandatory = True
 		dock.insert()
+	else:
+		dock = frappe.get_doc("Dock", "cust_chicory_erp")
+		dock.items = []
+		for it in items:
+			dock.append("items", it)
+		dock.save(ignore_permissions=True)
 	frappe.cache.delete_key("dock_layers")
+
+
+def setup_chicory_desktop_icon():
+	"""Ensure Desktop Icon document exists for cust_chicory_erp app on /desk."""
+	if not frappe.db.exists("DocType", "Desktop Icon"):
+		return
+	icon_name = "Chicory ERP"
+	icon_data = {
+		"doctype": "Desktop Icon",
+		"name": icon_name,
+		"label": icon_name,
+		"app": "cust_chicory_erp",
+		"icon_type": "App",
+		"link_type": "External",
+		"link": "/desk/cust-chicory-erp/dashboard-view/Chicory%20Manufacturing",
+		"logo_url": "/assets/cust_chicory_erp/images/chicory-logo.svg",
+		"hidden": 0,
+		"idx": 3,
+		"standard": 1,
+	}
+	if not frappe.db.exists("Desktop Icon", icon_name):
+		doc = frappe.get_doc(icon_data)
+		doc.flags.ignore_permissions = True
+		doc.insert()
+	else:
+		frappe.db.set_value("Desktop Icon", icon_name, {
+			"hidden": 0,
+			"link": "/desk/cust-chicory-erp/dashboard-view/Chicory%20Manufacturing",
+			"logo_url": "/assets/cust_chicory_erp/images/chicory-logo.svg",
+		})
+	frappe.clear_cache()
 
 
 def setup_chicory_dashboard_and_components():
@@ -437,13 +512,15 @@ def setup_chicory_dashboard_and_components():
 			"label": card_name,
 			"function": "Sum",
 			"document_type": "Chicory Root Inward",
-			"aggregate_function_based_on": "net_weight_kg",
+			"aggregate_function_based_on": "net_weight",
 			"is_standard": 1,
 			"module": "Cust Chicory Erp",
 			"color": "#6F3918",
 			"filters_json": json.dumps([["Chicory Root Inward", "docstatus", "=", 1]]),
 		})
 		c.insert(ignore_permissions=True)
+	else:
+		frappe.db.set_value("Number Card", card_name, "aggregate_function_based_on", "net_weight")
 
 	# 2. Total Finished Powder Produced Card
 	card_mfg = "Total Finished Powder Produced"
@@ -470,8 +547,8 @@ def setup_chicory_dashboard_and_components():
 			"chart_name": chart1_name,
 			"chart_type": "Sum",
 			"document_type": "Chicory Root Inward",
-			"based_on": "inward_date",
-			"value_based_on": "net_weight_kg",
+			"based_on": "posting_date",
+			"value_based_on": "net_weight",
 			"type": "Bar",
 			"timespan": "Last Year",
 			"time_interval": "Monthly",
@@ -481,6 +558,11 @@ def setup_chicory_dashboard_and_components():
 			"filters_json": json.dumps([["Chicory Root Inward", "docstatus", "=", 1]]),
 		})
 		ch1.insert(ignore_permissions=True)
+	else:
+		frappe.db.set_value("Dashboard Chart", chart1_name, {
+			"based_on": "posting_date",
+			"value_based_on": "net_weight",
+		})
 
 	# 4. Chart: Chicory Powder Production Output
 	chart2_name = "Chicory Powder Production Output"
@@ -621,9 +703,8 @@ def setup_chicory_sidebar():
 		return
 
 	items_data = [
-		# Top-level navigation (Overall Dashboard & Chicory Home)
+		# Top-level navigation (Overall Dashboard)
 		{"type": "Link", "label": "Overall Dashboard", "link_type": "Dashboard", "link_to": "Chicory Manufacturing", "icon": "layout-grid", "child": 0, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Chicory Home", "link_type": "Workspace", "link_to": "Chicory Food Manufacturing", "icon": "house", "child": 0, "indent": 0, "collapsible": 1},
 
 		# Section 1: Procurement
 		{"type": "Section Break", "label": "Procurement", "link_type": "DocType", "link_to": None, "icon": "shopping-cart", "child": 0, "indent": 1, "collapsible": 1},
@@ -651,6 +732,7 @@ def setup_chicory_sidebar():
 		{"type": "Section Break", "label": "Manufacturing", "link_type": "DocType", "link_to": None, "icon": "factory", "child": 0, "indent": 1, "collapsible": 1},
 		{"type": "Link", "label": "Work Order", "link_type": "DocType", "link_to": "Work Order", "icon": "factory", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Job Card", "link_type": "DocType", "link_to": "Job Card", "icon": "clipboard-list", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Workers (Employees)", "link_type": "DocType", "link_to": "Employee", "icon": "users", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Bill of Materials", "link_type": "DocType", "link_to": "BOM", "icon": "list-tree", "child": 1, "indent": 0, "collapsible": 1},
 
 		# Section 6: Sales
@@ -689,3 +771,22 @@ def setup_chicory_sidebar():
 	sb.flags.ignore_mandatory = True
 	sb.save()
 	frappe.cache.delete_key("module_sidebars")
+
+
+def verify_ui_setup():
+	"""Verify number card, dashboard chart, and sidebar structure."""
+	from frappe.desk.doctype.number_card.number_card import get_result
+	card = frappe.get_doc("Number Card", "Total Raw Roots Inward (Kg)")
+	card_val = get_result(card, filters=card.filters_json or [])
+	print("✔ Number Card Total Raw Roots Inward (Kg) Result:", card_val)
+
+	from frappe.desk.doctype.dashboard_chart.dashboard_chart import get
+	ch_data = get(chart_name="Chicory Root Inward Trends")
+	print("✔ Chart Chicory Root Inward Trends Data Labels:", len(ch_data.get("labels", [])))
+
+	from frappe.desk.doctype.sidebar.sidebar import get_sidebar_items
+	sb_items = get_sidebar_items("Cust Chicory Erp")
+	print("✔ Active Sidebar Items for Cust Chicory Erp:")
+	for it in sb_items.get("Cust Chicory Erp", []):
+		print(f"   [{it.get('type')}] {it.get('label')} -> {it.get('link_to')}")
+	return True

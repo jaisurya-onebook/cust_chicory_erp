@@ -1,5 +1,5 @@
 {
- "aggregate_function_based_on": "net_weight_kg",
+ "aggregate_function_based_on": "net_weight",
  "color": "#6F3918",
  "creation": "2026-11-24 14:31:51.865530",
  "currency": "INR",

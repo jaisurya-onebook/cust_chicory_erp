@@ -429,6 +429,18 @@
    "width": null
   },
   {
+   "fieldname": "operator",
+   "fieldtype": "Link",
+   "label": "Weighbridge Operator",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "unloading_worker",
+   "fieldtype": "Link",
+   "label": "Unloading Worker / Supervisor",
+   "options": "Employee"
+  },
+  {
    "alignment": null,
    "allow_bulk_edit": 0,
    "allow_in_quick_entry": 0,
