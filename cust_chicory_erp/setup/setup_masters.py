@@ -344,13 +344,13 @@ def setup_chicory_masters(company=None):
 		bom.insert(ignore_permissions=True)
 		bom.submit()
 
-	# 9. Suppliers & Customers
-	# Supplier: Chicory Farmer Cooperative
+	# 9. Suppliers & Customers (production-style master names)
 	supp1_group = "Raw Material" if frappe.db.exists("Supplier Group", "Raw Material") else "All Supplier Groups"
-	if not frappe.db.exists("Supplier", {"supplier_name": "Chicory Farmer Cooperative"}):
+	supp1_name = "Anandapur Kheda Chicory Producers Company Ltd"
+	if not frappe.db.exists("Supplier", {"supplier_name": supp1_name}):
 		supp1 = frappe.get_doc({
 			"doctype": "Supplier",
-			"supplier_name": "Chicory Farmer Cooperative",
+			"supplier_name": supp1_name,
 			"supplier_group": supp1_group,
 			"supplier_type": "Company",
 			"country": "India",
@@ -359,11 +359,12 @@ def setup_chicory_masters(company=None):
 
 	# Supplier: Chicory Express Logistics
 	serv_group = "Services" if frappe.db.exists("Supplier Group", "Services") else "All Supplier Groups"
-	supp2_name = frappe.db.get_value("Supplier", {"supplier_name": "Chicory Express Logistics"})
+	transporter_name = "VRL Logistics Ltd"
+	supp2_name = frappe.db.get_value("Supplier", {"supplier_name": transporter_name})
 	if not supp2_name:
 		supp2 = frappe.get_doc({
 			"doctype": "Supplier",
-			"supplier_name": "Chicory Express Logistics",
+			"supplier_name": transporter_name,
 			"supplier_group": serv_group,
 			"is_transporter": 1,
 			"supplier_type": "Company",
@@ -378,10 +379,11 @@ def setup_chicory_masters(company=None):
 	# Customer: National Coffee & Beverage Co.
 	cust_group = "Commercial" if frappe.db.exists("Customer Group", "Commercial") else "All Customer Groups"
 	territory = "India" if frappe.db.exists("Territory", "India") else "All Territories"
-	if not frappe.db.exists("Customer", {"customer_name": "National Coffee & Beverage Co."}):
+	cust_name = "ITC Limited"
+	if not frappe.db.exists("Customer", {"customer_name": cust_name}):
 		cust = frappe.get_doc({
 			"doctype": "Customer",
-			"customer_name": "National Coffee & Beverage Co.",
+			"customer_name": cust_name,
 			"customer_group": cust_group,
 			"territory": territory,
 			"customer_type": "Company",
@@ -758,13 +760,12 @@ def setup_chicory_sidebar():
 		{"type": "Link", "label": "Customer", "link_type": "DocType", "link_to": "Customer", "icon": "user-round", "child": 1, "indent": 0, "collapsible": 1},
 
 		# Section 7: Accounts
-		{"type": "Section Break", "label": "Accounts", "link_type": "DocType", "link_to": None, "icon": "calculator", "child": 0, "indent": 1, "collapsible": 1},
-		{"type": "Link", "label": "Purchase Invoice", "link_type": "DocType", "link_to": "Purchase Invoice", "icon": "receipt-text", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Payment Entry", "link_type": "DocType", "link_to": "Payment Entry", "icon": "credit-card", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Journal Entry", "link_type": "DocType", "link_to": "Journal Entry", "icon": "book-open", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Chart of Accounts", "link_type": "DocType", "link_to": "Account", "icon": "list-tree", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Bank Account", "link_type": "DocType", "link_to": "Bank Account", "icon": "landmark", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "General Ledger", "link_type": "Report", "link_to": "General Ledger", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Section Break", "label": "Accounts", "link_type": "DocType", "link_to": None, "icon": "book-open", "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Chart of Accounts", "link_type": "DocType", "link_to": "Account", "icon": "folder-tree", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Balance Sheet", "link_type": "Report", "link_to": "Balance Sheet", "icon": "file-text", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Trial Balance", "link_type": "Report", "link_to": "Trial Balance", "icon": "scale", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Profit and Loss", "link_type": "Report", "link_to": "Profit and Loss Statement", "icon": "chart-line", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Tally Export", "link_type": "Page", "link_to": "tally-export", "icon": "file-up", "child": 1, "indent": 0, "collapsible": 1},
 
 		# Section 8: Reports
 		{"type": "Section Break", "label": "Reports", "link_type": "DocType", "link_to": None, "icon": "sheet", "child": 0, "indent": 1, "collapsible": 1},

@@ -119,3 +119,23 @@ class TestMastersAndReports(IntegrationTestCase):
 		self.assertEqual(first_item.get("link_type"), "Dashboard")
 		self.assertEqual(first_item.get("link_to"), "Chicory Manufacturing")
 
+		# Verify Accounts section and its items
+		self.assertTrue(frappe.db.exists("Page", "tally-export"))
+		labels = [it.get("label") for it in resolved.items]
+		self.assertIn("Accounts", labels)
+		self.assertIn("Chart of Accounts", labels)
+		self.assertIn("Balance Sheet", labels)
+		self.assertIn("Trial Balance", labels)
+		self.assertIn("Profit and Loss", labels)
+		self.assertIn("Tally Export", labels)
+
+		# Verify Tally API
+		from cust_chicory_erp.api.tally import tally_list_documents, tally_preview
+		docs = tally_list_documents("Purchase Receipt")
+		self.assertIsInstance(docs, list)
+		if docs:
+			prev = tally_preview("Purchase Receipt", [docs[0]])
+			self.assertIn("xml", prev)
+			self.assertIn("rows", prev)
+			self.assertGreaterEqual(prev["count"], 1)
+
