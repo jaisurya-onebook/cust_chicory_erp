@@ -388,6 +388,35 @@ def setup_chicory_masters(company=None):
 		})
 		cust.insert(ignore_permissions=True)
 
+	setup_chicory_dock()
+
 	if not frappe.flags.in_test:
 		print(_("Chicory masters setup completed successfully for company: {0}").format(company))
 	return True
+
+
+def setup_chicory_dock():
+	"""Ensure Dock document exists for cust_chicory_erp app in Frappe v16 Desk."""
+	if not frappe.db.exists("DocType", "Dock"):
+		return
+	if not frappe.db.exists("Dock", "cust_chicory_erp"):
+		dock = frappe.get_doc({
+			"doctype": "Dock",
+			"name": "cust_chicory_erp",
+			"app": "cust_chicory_erp",
+			"standard": 1,
+			"user": "",
+			"items": [
+				{
+					"link_type": "Workspace",
+					"link_to": "Chicory Food Manufacturing",
+					"icon": "factory-soft",
+					"title": "Chicory Manufacturing",
+				}
+			],
+		})
+		dock.flags.ignore_permissions = True
+		dock.flags.ignore_mandatory = True
+		dock.insert()
+	frappe.cache.delete_key("dock_layers")
+

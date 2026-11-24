@@ -4,6 +4,7 @@ app_publisher = "Jaisurya"
 app_description = "Chicory Powder Manufacturing ERP"
 app_email = "admin@chicory.com"
 app_license = "mit"
+app_logo_url = "/assets/cust_chicory_erp/images/chicory-logo.svg"
 
 # Apps
 # ------------------

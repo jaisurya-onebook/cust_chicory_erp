@@ -1,0 +1,23 @@
+{
+ "app": "cust_chicory_erp",
+ "creation": "2026-11-24 14:22:59.448194",
+ "docstatus": 0,
+ "doctype": "Dock",
+ "idx": 0,
+ "items": [
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "factory-soft",
+   "link_to": "Chicory Food Manufacturing",
+   "link_type": "Workspace",
+   "title": "Chicory Manufacturing"
+  }
+ ],
+ "modified": "2026-11-24 14:22:59.448194",
+ "modified_by": "Administrator",
+ "name": "cust_chicory_erp",
+ "owner": "Administrator",
+ "standard": 1,
+ "user": ""
+}
