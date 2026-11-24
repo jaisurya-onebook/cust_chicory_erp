@@ -757,7 +757,16 @@ def setup_chicory_sidebar():
 		{"type": "Link", "label": "Payment Entry", "link_type": "DocType", "link_to": "Payment Entry", "icon": "credit-card", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Customer", "link_type": "DocType", "link_to": "Customer", "icon": "user-round", "child": 1, "indent": 0, "collapsible": 1},
 
-		# Section 7: Reports
+		# Section 7: Accounts
+		{"type": "Section Break", "label": "Accounts", "link_type": "DocType", "link_to": None, "icon": "calculator", "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Purchase Invoice", "link_type": "DocType", "link_to": "Purchase Invoice", "icon": "receipt-text", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Payment Entry", "link_type": "DocType", "link_to": "Payment Entry", "icon": "credit-card", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Journal Entry", "link_type": "DocType", "link_to": "Journal Entry", "icon": "book-open", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Chart of Accounts", "link_type": "DocType", "link_to": "Account", "icon": "list-tree", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Bank Account", "link_type": "DocType", "link_to": "Bank Account", "icon": "landmark", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "General Ledger", "link_type": "Report", "link_to": "General Ledger", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
+
+		# Section 8: Reports
 		{"type": "Section Break", "label": "Reports", "link_type": "DocType", "link_to": None, "icon": "sheet", "child": 0, "indent": 1, "collapsible": 1},
 		{"type": "Link", "label": "Batch Traceability", "link_type": "Report", "link_to": "Chicory Batch Traceability", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Stage Yield & Loss", "link_type": "Report", "link_to": "Chicory Stage Yield and Loss", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
