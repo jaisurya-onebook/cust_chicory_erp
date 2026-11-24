@@ -93,3 +93,29 @@ class TestDemoMastersAndReports(IntegrationTestCase):
 		self.assertGreaterEqual(len(ws.number_cards), 6)
 		self.assertGreaterEqual(len(ws.shortcuts), 8)
 		self.assertGreaterEqual(len(ws.links), 20)
+
+	def test_chicory_dashboard_and_components(self):
+		from frappe.desk.doctype.sidebar.sidebar import resolve_sidebar
+
+		self.assertTrue(frappe.db.exists("Dashboard", "Chicory Manufacturing"))
+		dash = frappe.get_doc("Dashboard", "Chicory Manufacturing")
+		self.assertEqual(dash.is_standard, 1)
+		self.assertEqual(dash.module, "Cust Chicory Erp")
+		self.assertGreaterEqual(len(dash.cards), 6)
+		self.assertGreaterEqual(len(dash.charts), 4)
+
+		for ch in [
+			"Chicory Root Inward Trends",
+			"Chicory Powder Production Output",
+			"Chicory Powder Dispatches",
+			"Quality Inspection Verdicts",
+		]:
+			self.assertTrue(frappe.db.exists("Dashboard Chart", ch))
+
+		resolved = resolve_sidebar("Cust Chicory Erp", "Administrator")
+		self.assertIsNotNone(resolved)
+		first_item = resolved.items[0]
+		self.assertEqual(first_item.get("label"), "Dashboard")
+		self.assertEqual(first_item.get("link_type"), "Dashboard")
+		self.assertEqual(first_item.get("link_to"), "Chicory Manufacturing")
+

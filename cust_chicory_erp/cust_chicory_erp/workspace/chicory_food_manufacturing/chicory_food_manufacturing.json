@@ -1,6 +1,23 @@
 {
- "charts": [],
- "content": "[{\"id\": \"hdr_kpi\", \"type\": \"header\", \"data\": {\"text\": \"Chicory Manufacturing KPIs\", \"level\": 4, \"col\": 12}}, {\"id\": \"nc_0\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Raw Root Stock (Kg)\", \"col\": 4}}, {\"id\": \"nc_1\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Roots on Quality Hold (Kg)\", \"col\": 4}}, {\"id\": \"nc_2\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Work Orders\", \"col\": 4}}, {\"id\": \"nc_3\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Finished Powder Available (Nos)\", \"col\": 4}}, {\"id\": \"nc_4\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Unposted Landed Costs\", \"col\": 4}}, {\"id\": \"nc_5\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Pending Quality Inspections\", \"col\": 4}}, {\"id\": \"hdr_sc\", \"type\": \"header\", \"data\": {\"text\": \"Quick Operations\", \"level\": 4, \"col\": 12}}, {\"id\": \"sc_0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Root Inward Slip\", \"col\": 3}}, {\"id\": \"sc_1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Create Purchase Receipt\", \"col\": 3}}, {\"id\": \"sc_2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Landed Cost Voucher\", \"col\": 3}}, {\"id\": \"sc_3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Quality Inspection\", \"col\": 3}}, {\"id\": \"sc_4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Work Order\", \"col\": 3}}, {\"id\": \"sc_5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Material Transfer\", \"col\": 3}}, {\"id\": \"sc_6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Open Job Cards\", \"col\": 3}}, {\"id\": \"sc_7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Manufacture Entry\", \"col\": 3}}, {\"id\": \"sc_8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Batch Traceability\", \"col\": 3}}, {\"id\": \"hdr_links\", \"type\": \"header\", \"data\": {\"text\": \"13-Step Process Links & Traceability\", \"level\": 4, \"col\": 12}}, {\"id\": \"card_0\", \"type\": \"card\", \"data\": {\"card_name\": \"Inward & Quality\", \"col\": 6}}, {\"id\": \"card_1\", \"type\": \"card\", \"data\": {\"card_name\": \"Stock & Landed Costs\", \"col\": 6}}, {\"id\": \"card_2\", \"type\": \"card\", \"data\": {\"card_name\": \"Production & Job Cards\", \"col\": 6}}, {\"id\": \"card_3\", \"type\": \"card\", \"data\": {\"card_name\": \"Sales & Traceability\", \"col\": 6}}]",
+ "charts": [
+  {
+   "chart_name": "Chicory Root Inward Trends",
+   "label": "Chicory Root Inward Trends"
+  },
+  {
+   "chart_name": "Chicory Powder Production Output",
+   "label": "Chicory Powder Production Output"
+  },
+  {
+   "chart_name": "Chicory Powder Dispatches",
+   "label": "Chicory Powder Dispatches"
+  },
+  {
+   "chart_name": "Quality Inspection Verdicts",
+   "label": "Quality Inspection Verdicts"
+  }
+ ],
+ "content": "[{\"id\": \"hdr_kpi\", \"type\": \"header\", \"data\": {\"text\": \"Chicory Manufacturing Live KPIs\", \"level\": 4, \"col\": 12}}, {\"id\": \"nc_inward\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Total Raw Roots Inward (Kg)\", \"col\": 4}}, {\"id\": \"nc_mfg\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Total Finished Powder Produced\", \"col\": 4}}, {\"id\": \"nc_active\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Work Orders\", \"col\": 4}}, {\"id\": \"nc_stock_root\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Raw Root Stock (Kg)\", \"col\": 4}}, {\"id\": \"nc_stock_fg\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Finished Powder Available (Nos)\", \"col\": 4}}, {\"id\": \"nc_hold\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Roots on Quality Hold (Kg)\", \"col\": 4}}, {\"id\": \"hdr_charts\", \"type\": \"header\", \"data\": {\"text\": \"Production & Quality Analytics Dashboard\", \"level\": 4, \"col\": 12}}, {\"id\": \"ch_inward\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Chicory Root Inward Trends\", \"col\": 6}}, {\"id\": \"ch_mfg\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Chicory Powder Production Output\", \"col\": 6}}, {\"id\": \"ch_sales\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Chicory Powder Dispatches\", \"col\": 6}}, {\"id\": \"ch_qa\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Quality Inspection Verdicts\", \"col\": 6}}, {\"id\": \"hdr_sc\", \"type\": \"header\", \"data\": {\"text\": \"Quick Operations (13 Stages)\", \"level\": 4, \"col\": 12}}, {\"id\": \"sc_0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Root Inward Slip\", \"col\": 3}}, {\"id\": \"sc_1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Create Purchase Receipt\", \"col\": 3}}, {\"id\": \"sc_2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Landed Cost Voucher\", \"col\": 3}}, {\"id\": \"sc_3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Quality Inspection\", \"col\": 3}}, {\"id\": \"sc_4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Work Order\", \"col\": 3}}, {\"id\": \"sc_5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Material Transfer\", \"col\": 3}}, {\"id\": \"sc_6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Open Job Cards\", \"col\": 3}}, {\"id\": \"sc_7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Manufacture Entry\", \"col\": 3}}, {\"id\": \"sc_8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Batch Traceability\", \"col\": 3}}, {\"id\": \"hdr_links\", \"type\": \"header\", \"data\": {\"text\": \"Workflow Process Links & Master Documents\", \"level\": 4, \"col\": 12}}, {\"id\": \"card_0\", \"type\": \"card\", \"data\": {\"card_name\": \"Inward & Quality\", \"col\": 6}}, {\"id\": \"card_1\", \"type\": \"card\", \"data\": {\"card_name\": \"Stock & Landed Costs\", \"col\": 6}}, {\"id\": \"card_2\", \"type\": \"card\", \"data\": {\"card_name\": \"Production & Job Cards\", \"col\": 6}}, {\"id\": \"card_3\", \"type\": \"card\", \"data\": {\"card_name\": \"Sales & Traceability\", \"col\": 6}}]",
  "creation": "2026-11-24 12:52:39.603579",
  "custom_blocks": [],
  "docstatus": 0,
@@ -14,7 +31,6 @@
  "link_type": "DocType",
  "links": [
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Inward & Quality",
@@ -24,7 +40,6 @@
    "type": "Card Break"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Purchase Orders",
@@ -35,7 +50,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Weighbridge & Inward Slips",
@@ -46,7 +60,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Purchase Receipts",
@@ -57,7 +70,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Quality Inspections",
@@ -68,7 +80,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Suppliers",
@@ -79,7 +90,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Stock & Landed Costs",
@@ -89,7 +99,6 @@
    "type": "Card Break"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Batch Stock",
@@ -100,7 +109,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Landed Cost Vouchers",
@@ -111,7 +119,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Warehouses",
@@ -122,7 +129,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Stock Ledger",
@@ -133,7 +139,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Stock Balance",
@@ -144,7 +149,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Production & Job Cards",
@@ -154,7 +158,6 @@
    "type": "Card Break"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "BOMs",
@@ -165,7 +168,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Work Orders",
@@ -176,7 +178,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Job Cards",
@@ -187,7 +188,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Stock Entries",
@@ -198,7 +198,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Operations",
@@ -209,7 +208,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Workstations",
@@ -220,7 +218,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales & Traceability",
@@ -230,7 +227,6 @@
    "type": "Card Break"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Orders",
@@ -241,7 +237,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Delivery Notes",
@@ -252,7 +247,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Invoices",
@@ -263,7 +257,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Customers",
@@ -274,7 +267,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Chicory Batch Traceability",
@@ -285,7 +277,6 @@
    "type": "Link"
   },
   {
-   "__unsaved": 1,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Chicory Stage Yield and Loss",
@@ -296,38 +287,32 @@
    "type": "Link"
   }
  ],
- "modified": "2026-11-24 13:31:57.762685",
+ "modified": "2026-11-24 14:32:45.417635",
  "modified_by": "Administrator",
  "module": "Cust Chicory Erp",
  "name": "Chicory Food Manufacturing",
  "number_cards": [
   {
-   "__unsaved": 1,
    "label": "Raw Root Stock (Kg)",
    "number_card_name": "Raw Root Stock (Kg)"
   },
   {
-   "__unsaved": 1,
    "label": "Roots on Quality Hold (Kg)",
    "number_card_name": "Roots on Quality Hold (Kg)"
   },
   {
-   "__unsaved": 1,
    "label": "Active Work Orders",
    "number_card_name": "Active Work Orders"
   },
   {
-   "__unsaved": 1,
    "label": "Finished Powder Available (Nos)",
    "number_card_name": "Finished Powder Available (Nos)"
   },
   {
-   "__unsaved": 1,
    "label": "Unposted Landed Costs",
    "number_card_name": "Unposted Landed Costs"
   },
   {
-   "__unsaved": 1,
    "label": "Pending Quality Inspections",
    "number_card_name": "Pending Quality Inspections"
   }
@@ -337,22 +322,18 @@
  "quick_lists": [],
  "roles": [
   {
-   "__unsaved": 1,
    "role": "Desk User"
   },
   {
-   "__unsaved": 1,
    "role": "Manufacturing User"
   },
   {
-   "__unsaved": 1,
    "role": "Stock User"
   }
  ],
  "sequence_id": 1.0,
  "shortcuts": [
   {
-   "__unsaved": 1,
    "color": "Blue",
    "doc_view": "",
    "label": "New Root Inward Slip",
@@ -360,7 +341,6 @@
    "type": "DocType"
   },
   {
-   "__unsaved": 1,
    "color": "Grey",
    "doc_view": "",
    "label": "Create Purchase Receipt",
@@ -368,7 +348,6 @@
    "type": "DocType"
   },
   {
-   "__unsaved": 1,
    "color": "Orange",
    "doc_view": "",
    "label": "Landed Cost Voucher",
@@ -376,7 +355,6 @@
    "type": "DocType"
   },
   {
-   "__unsaved": 1,
    "color": "Purple",
    "doc_view": "",
    "label": "New Quality Inspection",
@@ -384,7 +362,6 @@
    "type": "DocType"
   },
   {
-   "__unsaved": 1,
    "color": "Green",
    "doc_view": "",
    "label": "New Work Order",
@@ -392,7 +369,6 @@
    "type": "DocType"
   },
   {
-   "__unsaved": 1,
    "color": "Grey",
    "doc_view": "",
    "label": "Material Transfer",
@@ -400,7 +376,6 @@
    "type": "DocType"
   },
   {
-   "__unsaved": 1,
    "color": "Yellow",
    "doc_view": "",
    "label": "Open Job Cards",
@@ -408,7 +383,6 @@
    "type": "DocType"
   },
   {
-   "__unsaved": 1,
    "color": "Green",
    "doc_view": "",
    "label": "Manufacture Entry",
@@ -416,7 +390,6 @@
    "type": "DocType"
   },
   {
-   "__unsaved": 1,
    "color": "Blue",
    "doc_view": "",
    "label": "Batch Traceability",
