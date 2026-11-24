@@ -389,6 +389,7 @@ def setup_chicory_masters(company=None):
 		cust.insert(ignore_permissions=True)
 
 	setup_chicory_dock()
+	setup_chicory_sidebar()
 
 	if not frappe.flags.in_test:
 		print(_("Chicory masters setup completed successfully for company: {0}").format(company))
@@ -419,4 +420,72 @@ def setup_chicory_dock():
 		dock.flags.ignore_mandatory = True
 		dock.insert()
 	frappe.cache.delete_key("dock_layers")
+
+
+def setup_chicory_sidebar():
+	"""Ensure Sidebar document with workflow-wise sub tabs exists for Cust Chicory Erp."""
+	if not frappe.db.exists("DocType", "Sidebar"):
+		return
+
+	items_data = [
+		{"type": "Link", "label": "Chicory Food Manufacturing", "link_type": "Workspace", "link_to": "Chicory Food Manufacturing", "child": 0, "indent": 0, "collapsible": 1},
+
+		{"type": "Section Break", "label": "1. Inward & Procurement", "link_type": "DocType", "link_to": None, "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Chicory Root Inward", "link_type": "DocType", "link_to": "Chicory Root Inward", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Purchase Orders", "link_type": "DocType", "link_to": "Purchase Order", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Purchase Receipts", "link_type": "DocType", "link_to": "Purchase Receipt", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Suppliers", "link_type": "DocType", "link_to": "Supplier", "child": 1, "indent": 0, "collapsible": 1},
+
+		{"type": "Section Break", "label": "2. Quality & Batches", "link_type": "DocType", "link_to": None, "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Quality Inspections", "link_type": "DocType", "link_to": "Quality Inspection", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Batches & QA Status", "link_type": "DocType", "link_to": "Batch", "child": 1, "indent": 0, "collapsible": 1},
+
+		{"type": "Section Break", "label": "3. Landed Cost & Freight", "link_type": "DocType", "link_to": None, "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Landed Cost Vouchers", "link_type": "DocType", "link_to": "Landed Cost Voucher", "child": 1, "indent": 0, "collapsible": 1},
+
+		{"type": "Section Break", "label": "4. Storage & Stock", "link_type": "DocType", "link_to": None, "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Stock Transfers (WIP)", "link_type": "DocType", "link_to": "Stock Entry", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Warehouses", "link_type": "DocType", "link_to": "Warehouse", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Items & Materials", "link_type": "DocType", "link_to": "Item", "child": 1, "indent": 0, "collapsible": 1},
+
+		{"type": "Section Break", "label": "5. Production & Job Cards", "link_type": "DocType", "link_to": None, "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Bill of Materials (BOM)", "link_type": "DocType", "link_to": "BOM", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Work Orders", "link_type": "DocType", "link_to": "Work Order", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Job Cards (Operations)", "link_type": "DocType", "link_to": "Job Card", "child": 1, "indent": 0, "collapsible": 1},
+
+		{"type": "Section Break", "label": "6. Sales & Dispatch", "link_type": "DocType", "link_to": None, "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Sales Orders", "link_type": "DocType", "link_to": "Sales Order", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Delivery Notes (Dispatch)", "link_type": "DocType", "link_to": "Delivery Note", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Customers", "link_type": "DocType", "link_to": "Customer", "child": 1, "indent": 0, "collapsible": 1},
+
+		{"type": "Section Break", "label": "7. Billing & Payments", "link_type": "DocType", "link_to": None, "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Sales Invoices", "link_type": "DocType", "link_to": "Sales Invoice", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Payment Entries", "link_type": "DocType", "link_to": "Payment Entry", "child": 1, "indent": 0, "collapsible": 1},
+
+		{"type": "Section Break", "label": "8. Reports & Traceability", "link_type": "DocType", "link_to": None, "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Link", "label": "Chicory Batch Traceability", "link_type": "Report", "link_to": "Chicory Batch Traceability", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Stage Yield & Process Loss", "link_type": "Report", "link_to": "Chicory Stage Yield and Loss", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Stock Ledger", "link_type": "Report", "link_to": "Stock Ledger", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Stock Balance", "link_type": "Report", "link_to": "Stock Balance", "child": 1, "indent": 0, "collapsible": 1},
+	]
+
+	if frappe.db.exists("Sidebar", "Cust Chicory Erp"):
+		sb = frappe.get_doc("Sidebar", "Cust Chicory Erp")
+		sb.items = []
+	else:
+		sb = frappe.new_doc("Sidebar")
+		sb.name = "Cust Chicory Erp"
+		sb.title = "Cust Chicory Erp"
+		sb.module = "Cust Chicory Erp"
+		sb.app = "cust_chicory_erp"
+		sb.standard = 1
+
+	for it in items_data:
+		sb.append("items", it)
+
+	sb.flags.ignore_permissions = True
+	sb.flags.ignore_mandatory = True
+	sb.save()
+	frappe.cache.delete_key("module_sidebars")
+
 
