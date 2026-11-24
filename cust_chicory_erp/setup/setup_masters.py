@@ -700,25 +700,69 @@ def setup_chicory_dashboard_and_components():
 		})
 		ch3.insert(ignore_permissions=True)
 
-	# 7. Chart: Quality Inspection Verdicts
+	# 7. Chart: Quality Inspection Verdicts (bar detail by status over time)
 	chart4_name = "Quality Inspection Verdicts"
+	chart4_values = {
+		"doctype": "Dashboard Chart",
+		"chart_name": chart4_name,
+		"chart_type": "Group By",
+		"document_type": "Quality Inspection",
+		"group_by_based_on": "status",
+		"group_by_type": "Count",
+		"based_on": "report_date",
+		"time_interval": "Monthly",
+		"timeseries": 1,
+		"timespan": "Last Year",
+		"type": "Bar",
+		"show_values_over_chart": 1,
+		"is_standard": 1,
+		"module": "Cust Chicory Erp",
+		"color": "#FF8C00",
+		"currency": "",
+		"aggregate_function_based_on": "",
+		"filters_json": json.dumps([["Quality Inspection", "docstatus", "=", 1]]),
+	}
 	if not frappe.db.exists("Dashboard Chart", chart4_name):
-		ch4 = frappe.get_doc({
-			"doctype": "Dashboard Chart",
-			"chart_name": chart4_name,
-			"chart_type": "Group By",
-			"document_type": "Quality Inspection",
-			"group_by_based_on": "status",
-			"aggregate_function_based_on": "name",
-			"type": "Donut",
-			"is_standard": 1,
-			"module": "Cust Chicory Erp",
-			"color": "#FF8C00",
-			"filters_json": json.dumps([["Quality Inspection", "docstatus", "=", 1]]),
-		})
+		ch4 = frappe.get_doc(chart4_values)
 		ch4.insert(ignore_permissions=True)
+	else:
+		ch4 = frappe.get_doc("Dashboard Chart", chart4_name)
+		ch4.update(chart4_values)
+		ch4.save(ignore_permissions=True)
 
-	# 8. Dashboard Document: Chicory Manufacturing
+	# 8. Chart: Low Stock (bar — on-hand qty for critical/low chicory items)
+	chart5_name = "Low Stock"
+	chart5_values = {
+		"doctype": "Dashboard Chart",
+		"chart_name": chart5_name,
+		"chart_type": "Custom",
+		"source": "Chicory Low Stock",
+		"type": "Bar",
+		"show_values_over_chart": 1,
+		"is_standard": 1,
+		"module": "Cust Chicory Erp",
+		"color": "#E24C4C",
+		"currency": "",
+		"empty_state_message": "All chicory items are above low-stock thresholds.",
+		"filters_json": "{}",
+	}
+	if not frappe.db.exists("Dashboard Chart Source", "Chicory Low Stock"):
+		frappe.get_doc(
+			{
+				"doctype": "Dashboard Chart Source",
+				"name": "Chicory Low Stock",
+				"source_name": "Chicory Low Stock",
+				"module": "Cust Chicory Erp",
+			}
+		).insert(ignore_permissions=True)
+	if not frappe.db.exists("Dashboard Chart", chart5_name):
+		frappe.get_doc(chart5_values).insert(ignore_permissions=True)
+	else:
+		ch5 = frappe.get_doc("Dashboard Chart", chart5_name)
+		ch5.update(chart5_values)
+		ch5.save(ignore_permissions=True)
+
+	# 9. Dashboard Document: Chicory Manufacturing
 	dash_name = "Chicory Manufacturing"
 	expected_cards = [
 		{"card": "Net Sales"},
@@ -735,6 +779,7 @@ def setup_chicory_dashboard_and_components():
 		{"chart": "Chicory Powder Production Output", "width": "Half"},
 		{"chart": "Chicory Powder Dispatches", "width": "Half"},
 		{"chart": "Quality Inspection Verdicts", "width": "Half"},
+		{"chart": "Low Stock", "width": "Full"},
 	]
 
 	if not frappe.db.exists("Dashboard", dash_name):
@@ -768,6 +813,7 @@ def setup_chicory_dashboard_and_components():
 			"Chicory Powder Production Output",
 			"Chicory Powder Dispatches",
 			"Quality Inspection Verdicts",
+			"Low Stock",
 		]:
 			ws.append("charts", {"chart_name": c_name, "label": c_name})
 
@@ -785,6 +831,7 @@ def setup_chicory_dashboard_and_components():
 			{"id": "ch_mfg", "type": "chart", "data": {"chart_name": "Chicory Powder Production Output", "col": 6}},
 			{"id": "ch_sales", "type": "chart", "data": {"chart_name": "Chicory Powder Dispatches", "col": 6}},
 			{"id": "ch_qa", "type": "chart", "data": {"chart_name": "Quality Inspection Verdicts", "col": 6}},
+			{"id": "ch_low", "type": "chart", "data": {"chart_name": "Low Stock", "col": 12}},
 
 			{"id": "hdr_sc", "type": "header", "data": {"text": "Quick Operations (13 Stages)", "level": 4, "col": 12}},
 			{"id": "sc_0", "type": "shortcut", "data": {"shortcut_name": "New Chicory Root Inward Slip", "col": 3}},
@@ -846,12 +893,12 @@ def setup_chicory_sidebar():
 		{"type": "Link", "label": "BOM", "link_type": "DocType", "link_to": "BOM", "icon": "list-tree", "child": 1, "indent": 0, "collapsible": 1},
 
 		# Section 6: Sales
-		{"type": "Section Break", "label": "Sales", "link_type": "DocType", "link_to": None, "icon": "storefront", "child": 0, "indent": 1, "collapsible": 1},
+		{"type": "Section Break", "label": "Sales", "link_type": "DocType", "link_to": None, "icon": "shopping-bag", "child": 0, "indent": 1, "collapsible": 1},
 		{"type": "Link", "label": "Sales Order", "link_type": "DocType", "link_to": "Sales Order", "icon": "shopping-cart", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Delivery Note", "link_type": "DocType", "link_to": "Delivery Note", "icon": "truck", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Sales Invoice", "link_type": "DocType", "link_to": "Sales Invoice", "icon": "receipt-text", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Payment Entry", "link_type": "DocType", "link_to": "Payment Entry", "icon": "credit-card", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Customer", "link_type": "DocType", "link_to": "Customer", "icon": "user-round", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Customer", "link_type": "DocType", "link_to": "Customer", "icon": "users", "child": 1, "indent": 0, "collapsible": 1},
 
 		# Section 7: Accounts
 		{"type": "Section Break", "label": "Accounts", "link_type": "DocType", "link_to": None, "icon": "book-open", "child": 0, "indent": 1, "collapsible": 1},

@@ -325,7 +325,7 @@
    "child": 0,
    "collapsible": 1,
    "hidden": 0,
-   "icon": "storefront",
+   "icon": "shopping-bag",
    "indent": 1,
    "is_default_module": 0,
    "keep_closed": 0,
@@ -404,7 +404,7 @@
    "child": 1,
    "collapsible": 1,
    "hidden": 0,
-   "icon": "user-round",
+   "icon": "users",
    "indent": 0,
    "is_default_module": 0,
    "keep_closed": 0,
@@ -574,7 +574,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-11-24 15:57:51.038409",
+ "modified": "2026-11-24 16:05:56.634813",
  "modified_by": "Administrator",
  "module": "Cust Chicory Erp",
  "name": "Cust Chicory Erp",

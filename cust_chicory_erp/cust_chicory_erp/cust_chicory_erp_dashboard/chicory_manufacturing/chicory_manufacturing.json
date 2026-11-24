@@ -41,6 +41,10 @@
   {
    "chart": "Quality Inspection Verdicts",
    "width": "Half"
+  },
+  {
+   "chart": "Low Stock",
+   "width": "Full"
   }
  ],
  "creation": "2026-11-24 14:31:52.214304",
@@ -50,7 +54,7 @@
  "idx": 0,
  "is_default": 1,
  "is_standard": 1,
- "modified": "2026-11-24 15:57:50.674401",
+ "modified": "2026-11-24 16:05:58.454826",
  "modified_by": "Administrator",
  "module": "Cust Chicory Erp",
  "name": "Chicory Manufacturing",

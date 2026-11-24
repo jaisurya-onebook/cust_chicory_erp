@@ -183,3 +183,13 @@
 .chicory-see-all-btn:hover {
 	text-decoration: underline;
 }
+
+/* Sidebar Section separation and distinct top-level group styling */
+.body-sidebar .sidebar-items > .sidebar-item-container.section-item {
+	margin-top: 10px;
+}
+
+.body-sidebar .sidebar-items > .sidebar-item-container.section-item:first-child {
+	margin-top: 0;
+}
+

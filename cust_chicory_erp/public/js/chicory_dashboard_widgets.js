@@ -1,4 +1,11 @@
 frappe.provide("cust_chicory_erp.dashboard");
+frappe.provide("frappe.dashboards.chart_sources");
+
+frappe.dashboards.chart_sources["Chicory Low Stock"] = {
+	method:
+		"cust_chicory_erp.cust_chicory_erp.dashboard_chart_source.chicory_low_stock.chicory_low_stock.get",
+	filters: [],
+};
 
 cust_chicory_erp.dashboard.is_on_chicory_dashboard = function () {
 	const route = frappe.get_route();
