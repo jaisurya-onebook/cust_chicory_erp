@@ -52,7 +52,10 @@ required_apps = ["erpnext", "india_compliance"]
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+	"Purchase Receipt": "public/js/purchase_receipt.js",
+	"Job Card": "public/js/job_card.js",
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_kanban_js = {"doctype" : "public/js/doctype_kanban.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -96,7 +99,8 @@ required_apps = ["erpnext", "india_compliance"]
 # ------------
 
 # before_install = "cust_chicory_erp.install.before_install"
-# after_install = "cust_chicory_erp.install.after_install"
+after_install = "cust_chicory_erp.setup.custom_fields.setup_custom_fields"
+after_migrate = "cust_chicory_erp.setup.custom_fields.setup_custom_fields"
 
 # Uninstallation
 # ------------
@@ -159,13 +163,23 @@ required_apps = ["erpnext", "india_compliance"]
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Purchase Receipt": {
+		"validate": "cust_chicory_erp.controllers.weighbridge.calculate_weighbridge_weights",
+	},
+	"Job Card": {
+		"validate": "cust_chicory_erp.controllers.job_card.calculate_job_card_loss",
+	},
+	"Stock Entry": {
+		"validate": "cust_chicory_erp.controllers.quality_gate.validate_batch_quality",
+	},
+	"Delivery Note": {
+		"validate": "cust_chicory_erp.controllers.quality_gate.validate_batch_quality",
+	},
+	"Landed Cost Voucher": {
+		"validate": "cust_chicory_erp.controllers.landed_cost.validate_duplicate_freight",
+	},
+}
 
 # Scheduled Tasks
 # ---------------

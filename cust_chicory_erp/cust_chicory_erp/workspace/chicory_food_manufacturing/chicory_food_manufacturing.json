@@ -1,0 +1,431 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"hdr_kpi\", \"type\": \"header\", \"data\": {\"text\": \"Chicory Manufacturing KPIs\", \"level\": 4, \"col\": 12}}, {\"id\": \"nc_0\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Raw Root Stock (Kg)\", \"col\": 4}}, {\"id\": \"nc_1\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Roots on Quality Hold (Kg)\", \"col\": 4}}, {\"id\": \"nc_2\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Work Orders\", \"col\": 4}}, {\"id\": \"nc_3\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Finished Powder Available (Nos)\", \"col\": 4}}, {\"id\": \"nc_4\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Unposted Landed Costs\", \"col\": 4}}, {\"id\": \"nc_5\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Pending Quality Inspections\", \"col\": 4}}, {\"id\": \"hdr_sc\", \"type\": \"header\", \"data\": {\"text\": \"Quick Operations\", \"level\": 4, \"col\": 12}}, {\"id\": \"sc_0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Root Inward Slip\", \"col\": 3}}, {\"id\": \"sc_1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Create Purchase Receipt\", \"col\": 3}}, {\"id\": \"sc_2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Landed Cost Voucher\", \"col\": 3}}, {\"id\": \"sc_3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Quality Inspection\", \"col\": 3}}, {\"id\": \"sc_4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"New Work Order\", \"col\": 3}}, {\"id\": \"sc_5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Material Transfer\", \"col\": 3}}, {\"id\": \"sc_6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Open Job Cards\", \"col\": 3}}, {\"id\": \"sc_7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Manufacture Entry\", \"col\": 3}}, {\"id\": \"sc_8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Batch Traceability\", \"col\": 3}}, {\"id\": \"hdr_links\", \"type\": \"header\", \"data\": {\"text\": \"13-Step Process Links & Traceability\", \"level\": 4, \"col\": 12}}, {\"id\": \"card_0\", \"type\": \"card\", \"data\": {\"card_name\": \"Inward & Quality\", \"col\": 6}}, {\"id\": \"card_1\", \"type\": \"card\", \"data\": {\"card_name\": \"Stock & Landed Costs\", \"col\": 6}}, {\"id\": \"card_2\", \"type\": \"card\", \"data\": {\"card_name\": \"Production & Job Cards\", \"col\": 6}}, {\"id\": \"card_3\", \"type\": \"card\", \"data\": {\"card_name\": \"Sales & Traceability\", \"col\": 6}}]",
+ "creation": "2026-11-24 12:52:39.603579",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "hide_custom": 0,
+ "icon": "factory",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Chicory Food Manufacturing",
+ "link_type": "DocType",
+ "links": [
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Inward & Quality",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchase Orders",
+   "link_count": 0,
+   "link_to": "Purchase Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Weighbridge & Inward Slips",
+   "link_count": 0,
+   "link_to": "Chicory Root Inward",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchase Receipts",
+   "link_count": 0,
+   "link_to": "Purchase Receipt",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Quality Inspections",
+   "link_count": 0,
+   "link_to": "Quality Inspection",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Suppliers",
+   "link_count": 0,
+   "link_to": "Supplier",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock & Landed Costs",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Batch Stock",
+   "link_count": 0,
+   "link_to": "Batch",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Landed Cost Vouchers",
+   "link_count": 0,
+   "link_to": "Landed Cost Voucher",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Warehouses",
+   "link_count": 0,
+   "link_to": "Warehouse",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Ledger",
+   "link_count": 0,
+   "link_to": "Stock Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Balance",
+   "link_count": 0,
+   "link_to": "Stock Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Production & Job Cards",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "BOMs",
+   "link_count": 0,
+   "link_to": "BOM",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Work Orders",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Job Cards",
+   "link_count": 0,
+   "link_to": "Job Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Entries",
+   "link_count": 0,
+   "link_to": "Stock Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Operations",
+   "link_count": 0,
+   "link_to": "Operation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Workstations",
+   "link_count": 0,
+   "link_to": "Workstation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales & Traceability",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Orders",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Delivery Notes",
+   "link_count": 0,
+   "link_to": "Delivery Note",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Invoices",
+   "link_count": 0,
+   "link_to": "Sales Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customers",
+   "link_count": 0,
+   "link_to": "Customer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Chicory Batch Traceability",
+   "link_count": 0,
+   "link_to": "Chicory Batch Traceability",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "__unsaved": 1,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Chicory Stage Yield and Loss",
+   "link_count": 0,
+   "link_to": "Chicory Stage Yield and Loss",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-11-24 13:31:57.762685",
+ "modified_by": "Administrator",
+ "module": "Cust Chicory Erp",
+ "name": "Chicory Food Manufacturing",
+ "number_cards": [
+  {
+   "__unsaved": 1,
+   "label": "Raw Root Stock (Kg)",
+   "number_card_name": "Raw Root Stock (Kg)"
+  },
+  {
+   "__unsaved": 1,
+   "label": "Roots on Quality Hold (Kg)",
+   "number_card_name": "Roots on Quality Hold (Kg)"
+  },
+  {
+   "__unsaved": 1,
+   "label": "Active Work Orders",
+   "number_card_name": "Active Work Orders"
+  },
+  {
+   "__unsaved": 1,
+   "label": "Finished Powder Available (Nos)",
+   "number_card_name": "Finished Powder Available (Nos)"
+  },
+  {
+   "__unsaved": 1,
+   "label": "Unposted Landed Costs",
+   "number_card_name": "Unposted Landed Costs"
+  },
+  {
+   "__unsaved": 1,
+   "label": "Pending Quality Inspections",
+   "number_card_name": "Pending Quality Inspections"
+  }
+ ],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "__unsaved": 1,
+   "role": "Desk User"
+  },
+  {
+   "__unsaved": 1,
+   "role": "Manufacturing User"
+  },
+  {
+   "__unsaved": 1,
+   "role": "Stock User"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "__unsaved": 1,
+   "color": "Blue",
+   "doc_view": "",
+   "label": "New Root Inward Slip",
+   "link_to": "Chicory Root Inward",
+   "type": "DocType"
+  },
+  {
+   "__unsaved": 1,
+   "color": "Grey",
+   "doc_view": "",
+   "label": "Create Purchase Receipt",
+   "link_to": "Purchase Receipt",
+   "type": "DocType"
+  },
+  {
+   "__unsaved": 1,
+   "color": "Orange",
+   "doc_view": "",
+   "label": "Landed Cost Voucher",
+   "link_to": "Landed Cost Voucher",
+   "type": "DocType"
+  },
+  {
+   "__unsaved": 1,
+   "color": "Purple",
+   "doc_view": "",
+   "label": "New Quality Inspection",
+   "link_to": "Quality Inspection",
+   "type": "DocType"
+  },
+  {
+   "__unsaved": 1,
+   "color": "Green",
+   "doc_view": "",
+   "label": "New Work Order",
+   "link_to": "Work Order",
+   "type": "DocType"
+  },
+  {
+   "__unsaved": 1,
+   "color": "Grey",
+   "doc_view": "",
+   "label": "Material Transfer",
+   "link_to": "Stock Entry",
+   "type": "DocType"
+  },
+  {
+   "__unsaved": 1,
+   "color": "Yellow",
+   "doc_view": "",
+   "label": "Open Job Cards",
+   "link_to": "Job Card",
+   "type": "DocType"
+  },
+  {
+   "__unsaved": 1,
+   "color": "Green",
+   "doc_view": "",
+   "label": "Manufacture Entry",
+   "link_to": "Stock Entry",
+   "type": "DocType"
+  },
+  {
+   "__unsaved": 1,
+   "color": "Blue",
+   "doc_view": "",
+   "label": "Batch Traceability",
+   "link_to": "Chicory Batch Traceability",
+   "report_ref_doctype": "Stock Entry",
+   "type": "Report"
+  }
+ ],
+ "standard": 1,
+ "title": "Chicory Food Manufacturing",
+ "type": "Workspace"
+}
