@@ -1,6 +1,6 @@
 import frappe
 from frappe.tests import IntegrationTestCase
-from cust_chicory_erp.setup.demo_masters import setup_chicory_masters
+from cust_chicory_erp.setup.setup_masters import setup_chicory_masters
 from cust_chicory_erp.cust_chicory_erp.report.chicory_batch_traceability.chicory_batch_traceability import (
 	execute as exec_traceability,
 )
@@ -9,7 +9,7 @@ from cust_chicory_erp.cust_chicory_erp.report.chicory_stage_yield_and_loss.chico
 )
 
 
-class TestDemoMastersAndReports(IntegrationTestCase):
+class TestMastersAndReports(IntegrationTestCase):
 	def test_setup_chicory_masters_idempotency(self):
 		company = frappe.db.get_single_value("Global Defaults", "default_company") or "chicory"
 		# Run twice to test idempotency

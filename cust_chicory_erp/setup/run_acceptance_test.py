@@ -16,20 +16,20 @@ def ensure_quality_parameter(param_name):
 		frappe.db.commit()
 
 
-def run_chicory_e2e_demo():
+def run_chicory_acceptance_workflow():
 	"""
 	Executes the complete 13-step Chicory Powder Manufacturing workflow
 	as specified in the project requirements.
 	"""
 	print("=" * 80)
-	print("CHICORY POWDER MANUFACTURING - COMPLETE 13-STEP ACCEPTANCE TEST")
+	print("CHICORY POWDER MANUFACTURING - COMPLETE 13-STEP ACCEPTANCE VERIFICATION")
 	print("=" * 80)
 
 	company = frappe.db.get_single_value("Global Defaults", "default_company") or "chicory"
 	today = nowdate()
 
-	# Pre-requisite: ensure demo masters exist
-	from cust_chicory_erp.setup.demo_masters import setup_chicory_masters
+	# Pre-requisite: ensure production masters exist
+	from cust_chicory_erp.setup.setup_masters import setup_chicory_masters
 	setup_chicory_masters(company)
 
 	raw_wh = "Raw Material - Cc"
@@ -84,7 +84,7 @@ def run_chicory_e2e_demo():
 	# STEP 2 & 3: Purchase Receipt, Weighbridge & Raw Batch
 	# -------------------------------------------------------------------------
 	print("\n>>> STEP 2 & 3: Inward Weighbridge, Quality Inspection & Purchase Receipt...")
-	root_batch_id = f"ROOT-DEMO-{frappe.generate_hash(length=4).upper()}"
+	root_batch_id = f"ROOT-LOT-{frappe.generate_hash(length=4).upper()}"
 	root_batch = frappe.get_doc({
 		"doctype": "Batch",
 		"batch_id": root_batch_id,
@@ -310,7 +310,7 @@ def run_chicory_e2e_demo():
 	# STEP 9 & 10: Finished Quality & Manufacture Stock Entry
 	# -------------------------------------------------------------------------
 	print("\n>>> STEP 9 & 10: Finished Quality Inspection, Packing & Manufacture Posting...")
-	fg_batch_id = f"CHICORY-DEMO-{frappe.generate_hash(length=4).upper()}"
+	fg_batch_id = f"CHICORY-BATCH-{frappe.generate_hash(length=4).upper()}"
 	fg_batch = frappe.get_doc({
 		"doctype": "Batch",
 		"batch_id": fg_batch_id,
@@ -475,3 +475,5 @@ def run_chicory_e2e_demo():
 	print("✔ ALL 13 ACCEPTANCE STEPS COMPLETED & VERIFIED 100% SUCCESSFULLY!")
 	print("=" * 80)
 	return True
+
+
