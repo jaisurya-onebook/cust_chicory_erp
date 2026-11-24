@@ -1,0 +1,18 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="chicoryGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6F3918"/>
+      <stop offset="100%" stop-color="#9E5325"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="28" fill="url(#chicoryGrad)"/>
+  <g transform="translate(18, 16)" fill="white">
+    <!-- Chicory Foliage & Sprout -->
+    <path d="M32 6C32 6 35 17 28 24C22 31 12 32 12 32C12 32 20 35 27 31C32 27 32 20 32 6Z" opacity="0.95"/>
+    <path d="M32 6C32 6 29 17 36 24C42 31 52 32 52 32C52 32 44 35 37 31C32 27 32 20 32 6Z" opacity="0.95"/>
+    <path d="M32 4C28 13 28 22 32 29C36 22 36 13 32 4Z"/>
+    <!-- Manufacturing & Root Stylized Symbol -->
+    <path d="M29 32C25 39 23 48 25 56C26 62 31 66 32 68C33 66 38 62 39 56C41 48 39 39 35 32H29Z"/>
+    <circle cx="32" cy="46" r="16" stroke="white" stroke-width="4" stroke-dasharray="6 3" fill="none" opacity="0.8"/>
+  </g>
+</svg>

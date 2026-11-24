@@ -1,7 +1,7 @@
 app_name = "cust_chicory_erp"
-app_title = "Cust Chicory Erp"
+app_title = "Chicory ERP"
 app_publisher = "Jaisurya"
-app_description = "Custom ERPNext App for Chicory"
+app_description = "Chicory Powder Manufacturing ERP"
 app_email = "admin@chicory.com"
 app_license = "mit"
 
@@ -11,15 +11,15 @@ app_license = "mit"
 required_apps = ["erpnext", "india_compliance"]
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "cust_chicory_erp",
-# 		"logo": "/assets/cust_chicory_erp/logo.png",
-# 		"title": "Cust Chicory Erp",
-# 		"route": "/cust_chicory_erp",
-# 		"has_permission": "cust_chicory_erp.api.permission.has_app_permission",
-# 	}
-# ]
+add_to_apps_screen = [
+	{
+		"name": "cust_chicory_erp",
+		"logo": "/assets/cust_chicory_erp/images/chicory-logo.svg",
+		"title": "Chicory ERP",
+		"route": "/desk/chicory-food-manufacturing",
+		"sequence_id": 3,
+	}
+]
 
 # The dock, the rail down the left of the desk, is a document rather than a hook. Author it in
 # Manage Dock on a developer-mode site and press Export to App, and it is written to
