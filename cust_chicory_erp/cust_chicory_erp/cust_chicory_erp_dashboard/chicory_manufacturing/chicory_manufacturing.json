@@ -1,6 +1,12 @@
 {
  "cards": [
   {
+   "card": "Net Sales"
+  },
+  {
+   "card": "Net Purchases"
+  },
+  {
    "card": "Total Raw Roots Inward (Kg)"
   },
   {
@@ -13,10 +19,10 @@
    "card": "Finished Powder Available (Nos)"
   },
   {
-   "card": "Active Work Orders"
+   "card": "Roots on Quality Hold (Kg)"
   },
   {
-   "card": "Roots on Quality Hold (Kg)"
+   "card": "Active Work Orders"
   }
  ],
  "charts": [
@@ -44,7 +50,7 @@
  "idx": 0,
  "is_default": 1,
  "is_standard": 1,
- "modified": "2026-11-24 15:38:18.325383",
+ "modified": "2026-11-24 15:57:50.674401",
  "modified_by": "Administrator",
  "module": "Cust Chicory Erp",
  "name": "Chicory Manufacturing",

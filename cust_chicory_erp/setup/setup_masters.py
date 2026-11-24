@@ -159,6 +159,28 @@ def setup_chicory_masters(company=None):
 			"default_warehouse": pkg_wh,
 		},
 		{
+			"item_code": "CORRUGATED-BOX-20KG",
+			"item_name": "Corrugated Box 20Kg",
+			"item_group": "Chicory Packaging",
+			"stock_uom": "Nos",
+			"is_stock_item": 1,
+			"has_batch_no": 0,
+			"gst_hsn_code": "39232990",
+			"valuation_method": "Moving Average",
+			"default_warehouse": pkg_wh,
+		},
+		{
+			"item_code": "BAG-50KG",
+			"item_name": "PP Woven Bag 50Kg",
+			"item_group": "Chicory Packaging",
+			"stock_uom": "Nos",
+			"is_stock_item": 1,
+			"has_batch_no": 0,
+			"gst_hsn_code": "39232990",
+			"valuation_method": "Moving Average",
+			"default_warehouse": pkg_wh,
+		},
+		{
 			"item_code": "CHICORY-POWDER-1KG",
 			"item_name": "Chicory Powder 1Kg",
 			"item_group": "Chicory Finished Goods",
@@ -505,7 +527,46 @@ def setup_chicory_dashboard_and_components():
 	"""Ensure standard Frappe Dashboard, Charts, and Number Cards exist."""
 	import json
 
-	# 1. Total Raw Roots Inward Card
+	# 1. Financial Overview Cards
+	card_sales = "Net Sales"
+	if not frappe.db.exists("Number Card", card_sales):
+		c_sales = frappe.get_doc({
+			"doctype": "Number Card",
+			"name": card_sales,
+			"label": card_sales,
+			"function": "Sum",
+			"document_type": "Sales Invoice",
+			"aggregate_function_based_on": "grand_total",
+			"currency": "INR",
+			"is_standard": 1,
+			"module": "Cust Chicory Erp",
+			"color": "#2B8256",
+			"filters_json": json.dumps([["Sales Invoice", "docstatus", "=", 1]]),
+		})
+		c_sales.insert(ignore_permissions=True)
+	else:
+		frappe.db.set_value("Number Card", card_sales, "currency", "INR")
+
+	card_purch = "Net Purchases"
+	if not frappe.db.exists("Number Card", card_purch):
+		c_purch = frappe.get_doc({
+			"doctype": "Number Card",
+			"name": card_purch,
+			"label": card_purch,
+			"function": "Sum",
+			"document_type": "Purchase Receipt",
+			"aggregate_function_based_on": "grand_total",
+			"currency": "INR",
+			"is_standard": 1,
+			"module": "Cust Chicory Erp",
+			"color": "#6F3918",
+			"filters_json": json.dumps([["Purchase Receipt", "docstatus", "=", 1]]),
+		})
+		c_purch.insert(ignore_permissions=True)
+	else:
+		frappe.db.set_value("Number Card", card_purch, "currency", "INR")
+
+	# 2. Total Raw Roots Inward Card (Quantity - no currency symbol)
 	card_name = "Total Raw Roots Inward (Kg)"
 	if not frappe.db.exists("Number Card", card_name):
 		c = frappe.get_doc({
@@ -522,9 +583,14 @@ def setup_chicory_dashboard_and_components():
 		})
 		c.insert(ignore_permissions=True)
 	else:
-		frappe.db.set_value("Number Card", card_name, "aggregate_function_based_on", "net_weight")
+		frappe.db.set_value("Number Card", card_name, {
+			"document_type": "Chicory Root Inward",
+			"aggregate_function_based_on": "net_weight",
+			"currency": "",
+			"filters_json": json.dumps([["Chicory Root Inward", "docstatus", "=", 1]]),
+		})
 
-	# 2. Total Finished Powder Produced Card
+	# 3. Total Finished Powder Produced Card (Quantity - no currency symbol)
 	card_mfg = "Total Finished Powder Produced"
 	if not frappe.db.exists("Number Card", card_mfg):
 		c2 = frappe.get_doc({
@@ -540,12 +606,29 @@ def setup_chicory_dashboard_and_components():
 			"filters_json": json.dumps([["Work Order", "docstatus", "=", 1]]),
 		})
 		c2.insert(ignore_permissions=True)
+	else:
+		frappe.db.set_value("Number Card", card_mfg, {
+			"aggregate_function_based_on": "produced_qty",
+			"currency": "",
+		})
 
-	# 3. Chart: Chicory Root Inward
-	chart1_name = "Chicory Root Inward"
+	# Ensure other non-currency cards don't show currency symbols
+	for nc_qty in [
+		"Raw Root Stock (Kg)",
+		"Finished Powder Available (Nos)",
+		"Active Work Orders",
+		"Roots on Quality Hold (Kg)",
+	]:
+		if frappe.db.exists("Number Card", nc_qty):
+			frappe.db.set_value("Number Card", nc_qty, "currency", "")
+
+	# 4. Chart: Chicory Root Inward
+	if frappe.db.exists("Dashboard Chart", "Root Inward"):
+		frappe.delete_doc("Dashboard Chart", "Root Inward", ignore_permissions=True, force=True)
 	if frappe.db.exists("Dashboard Chart", "Chicory Root Inward Trends"):
 		frappe.delete_doc("Dashboard Chart", "Chicory Root Inward Trends", ignore_permissions=True, force=True)
 
+	chart1_name = "Chicory Root Inward"
 	if not frappe.db.exists("Dashboard Chart", chart1_name):
 		ch1 = frappe.get_doc({
 			"doctype": "Dashboard Chart",
@@ -557,6 +640,7 @@ def setup_chicory_dashboard_and_components():
 			"type": "Bar",
 			"timespan": "Last Year",
 			"time_interval": "Monthly",
+			"timeseries": 1,
 			"is_standard": 1,
 			"module": "Cust Chicory Erp",
 			"color": "#6F3918",
@@ -565,11 +649,16 @@ def setup_chicory_dashboard_and_components():
 		ch1.insert(ignore_permissions=True)
 	else:
 		frappe.db.set_value("Dashboard Chart", chart1_name, {
+			"chart_name": chart1_name,
+			"document_type": "Chicory Root Inward",
 			"based_on": "posting_date",
 			"value_based_on": "net_weight",
+			"timeseries": 1,
+			"type": "Bar",
+			"filters_json": json.dumps([["Chicory Root Inward", "docstatus", "=", 1]]),
 		})
 
-	# 4. Chart: Chicory Powder Production Output
+	# 5. Chart: Chicory Powder Production Output
 	chart2_name = "Chicory Powder Production Output"
 	if not frappe.db.exists("Dashboard Chart", chart2_name):
 		ch2 = frappe.get_doc({
@@ -582,6 +671,7 @@ def setup_chicory_dashboard_and_components():
 			"type": "Line",
 			"timespan": "Last Year",
 			"time_interval": "Monthly",
+			"timeseries": 1,
 			"is_standard": 1,
 			"module": "Cust Chicory Erp",
 			"color": "#2B8256",
@@ -589,7 +679,7 @@ def setup_chicory_dashboard_and_components():
 		})
 		ch2.insert(ignore_permissions=True)
 
-	# 5. Chart: Finished Goods Dispatches
+	# 6. Chart: Finished Goods Dispatches
 	chart3_name = "Chicory Powder Dispatches"
 	if not frappe.db.exists("Dashboard Chart", chart3_name):
 		ch3 = frappe.get_doc({
@@ -602,6 +692,7 @@ def setup_chicory_dashboard_and_components():
 			"type": "Bar",
 			"timespan": "Last Year",
 			"time_interval": "Monthly",
+			"timeseries": 1,
 			"is_standard": 1,
 			"module": "Cust Chicory Erp",
 			"color": "#1F77B4",
@@ -609,7 +700,7 @@ def setup_chicory_dashboard_and_components():
 		})
 		ch3.insert(ignore_permissions=True)
 
-	# 6. Chart: Quality Inspection Verdicts
+	# 7. Chart: Quality Inspection Verdicts
 	chart4_name = "Quality Inspection Verdicts"
 	if not frappe.db.exists("Dashboard Chart", chart4_name):
 		ch4 = frappe.get_doc({
@@ -627,8 +718,25 @@ def setup_chicory_dashboard_and_components():
 		})
 		ch4.insert(ignore_permissions=True)
 
-	# 7. Dashboard Document
+	# 8. Dashboard Document: Chicory Manufacturing
 	dash_name = "Chicory Manufacturing"
+	expected_cards = [
+		{"card": "Net Sales"},
+		{"card": "Net Purchases"},
+		{"card": "Total Raw Roots Inward (Kg)"},
+		{"card": "Total Finished Powder Produced"},
+		{"card": "Raw Root Stock (Kg)"},
+		{"card": "Finished Powder Available (Nos)"},
+		{"card": "Roots on Quality Hold (Kg)"},
+		{"card": "Active Work Orders"},
+	]
+	expected_charts = [
+		{"chart": "Chicory Root Inward", "width": "Half"},
+		{"chart": "Chicory Powder Production Output", "width": "Half"},
+		{"chart": "Chicory Powder Dispatches", "width": "Half"},
+		{"chart": "Quality Inspection Verdicts", "width": "Half"},
+	]
+
 	if not frappe.db.exists("Dashboard", dash_name):
 		d = frappe.get_doc({
 			"doctype": "Dashboard",
@@ -637,31 +745,17 @@ def setup_chicory_dashboard_and_components():
 			"module": "Cust Chicory Erp",
 			"is_default": 1,
 			"is_standard": 1,
-			"cards": [
-				{"card": "Total Raw Roots Inward (Kg)"},
-				{"card": "Total Finished Powder Produced"},
-				{"card": "Raw Root Stock (Kg)"},
-				{"card": "Finished Powder Available (Nos)"},
-				{"card": "Active Work Orders"},
-				{"card": "Roots on Quality Hold (Kg)"},
-			],
-			"charts": [
-				{"chart": "Chicory Root Inward", "width": "Half"},
-				{"chart": "Chicory Powder Production Output", "width": "Half"},
-				{"chart": "Chicory Powder Dispatches", "width": "Half"},
-				{"chart": "Quality Inspection Verdicts", "width": "Half"},
-			],
+			"cards": expected_cards,
+			"charts": expected_charts,
 		})
 		d.insert(ignore_permissions=True)
 	else:
 		dash = frappe.get_doc("Dashboard", dash_name)
+		dash.cards = []
+		for c in expected_cards:
+			dash.append("cards", c)
 		dash.charts = []
-		for ch in [
-			{"chart": "Chicory Root Inward", "width": "Half"},
-			{"chart": "Chicory Powder Production Output", "width": "Half"},
-			{"chart": "Chicory Powder Dispatches", "width": "Half"},
-			{"chart": "Quality Inspection Verdicts", "width": "Half"},
-		]:
+		for ch in expected_charts:
 			dash.append("charts", ch)
 		dash.save(ignore_permissions=True)
 
@@ -693,7 +787,7 @@ def setup_chicory_dashboard_and_components():
 			{"id": "ch_qa", "type": "chart", "data": {"chart_name": "Quality Inspection Verdicts", "col": 6}},
 
 			{"id": "hdr_sc", "type": "header", "data": {"text": "Quick Operations (13 Stages)", "level": 4, "col": 12}},
-			{"id": "sc_0", "type": "shortcut", "data": {"shortcut_name": "New Root Inward Slip", "col": 3}},
+			{"id": "sc_0", "type": "shortcut", "data": {"shortcut_name": "New Chicory Root Inward Slip", "col": 3}},
 			{"id": "sc_1", "type": "shortcut", "data": {"shortcut_name": "Create Purchase Receipt", "col": 3}},
 			{"id": "sc_2", "type": "shortcut", "data": {"shortcut_name": "Landed Cost Voucher", "col": 3}},
 			{"id": "sc_3", "type": "shortcut", "data": {"shortcut_name": "New Quality Inspection", "col": 3}},
@@ -736,7 +830,7 @@ def setup_chicory_sidebar():
 
 		# Section 3: Landed Cost
 		{"type": "Section Break", "label": "Landed Cost", "link_type": "DocType", "link_to": None, "icon": "receipt-text", "child": 0, "indent": 1, "collapsible": 1},
-		{"type": "Link", "label": "Landed Cost Voucher", "link_type": "DocType", "link_to": "Landed Cost Voucher", "icon": "receipt-text", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Landed Cost", "link_type": "DocType", "link_to": "Landed Cost Voucher", "icon": "receipt-text", "child": 1, "indent": 0, "collapsible": 1},
 
 		# Section 4: Stock
 		{"type": "Section Break", "label": "Stock", "link_type": "DocType", "link_to": None, "icon": "warehouse", "child": 0, "indent": 1, "collapsible": 1},
@@ -748,8 +842,8 @@ def setup_chicory_sidebar():
 		{"type": "Section Break", "label": "Manufacturing", "link_type": "DocType", "link_to": None, "icon": "factory", "child": 0, "indent": 1, "collapsible": 1},
 		{"type": "Link", "label": "Work Order", "link_type": "DocType", "link_to": "Work Order", "icon": "factory", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Job Card", "link_type": "DocType", "link_to": "Job Card", "icon": "clipboard-list", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Workers (Employees)", "link_type": "DocType", "link_to": "Employee", "icon": "users", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Bill of Materials", "link_type": "DocType", "link_to": "BOM", "icon": "list-tree", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Workers", "link_type": "DocType", "link_to": "Employee", "icon": "users", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "BOM", "link_type": "DocType", "link_to": "BOM", "icon": "list-tree", "child": 1, "indent": 0, "collapsible": 1},
 
 		# Section 6: Sales
 		{"type": "Section Break", "label": "Sales", "link_type": "DocType", "link_to": None, "icon": "storefront", "child": 0, "indent": 1, "collapsible": 1},
@@ -769,8 +863,8 @@ def setup_chicory_sidebar():
 
 		# Section 8: Reports
 		{"type": "Section Break", "label": "Reports", "link_type": "DocType", "link_to": None, "icon": "sheet", "child": 0, "indent": 1, "collapsible": 1},
-		{"type": "Link", "label": "Batch Traceability", "link_type": "Report", "link_to": "Chicory Batch Traceability", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
-		{"type": "Link", "label": "Stage Yield & Loss", "link_type": "Report", "link_to": "Chicory Stage Yield and Loss", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Batch Trace", "link_type": "Report", "link_to": "Chicory Batch Traceability", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
+		{"type": "Link", "label": "Stage Yield", "link_type": "Report", "link_to": "Chicory Stage Yield and Loss", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
 		{"type": "Link", "label": "Stock Ledger", "link_type": "Report", "link_to": "Stock Ledger", "icon": "sheet", "child": 1, "indent": 0, "collapsible": 1},
 	]
 

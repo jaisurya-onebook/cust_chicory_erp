@@ -12,6 +12,7 @@ _CANCEL_ORDER = [
 	"Stock Entry",
 	"Job Card",
 	"Quality Inspection",
+	"Chicory Root Inward",
 	"Landed Cost Voucher",
 	"Purchase Receipt",
 	"Work Order",

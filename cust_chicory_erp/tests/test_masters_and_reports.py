@@ -139,3 +139,11 @@ class TestMastersAndReports(IntegrationTestCase):
 			self.assertIn("rows", prev)
 			self.assertGreaterEqual(prev["count"], 1)
 
+		# Verify Process Dashboard Widgets (Low stock and Operations queue)
+		from cust_chicory_erp.analysis.process_dashboard_widgets import get_process_dashboard_widgets
+		widgets_res = get_process_dashboard_widgets("Chicory Manufacturing")
+		self.assertIn("widgets", widgets_res)
+		self.assertIn("operations_queue", widgets_res)
+		self.assertEqual(len(widgets_res["widgets"]), 3)
+		self.assertEqual(len(widgets_res["operations_queue"]), 3)
+

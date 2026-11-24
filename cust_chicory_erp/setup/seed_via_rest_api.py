@@ -14,6 +14,9 @@ import requests
 COMPANY = "chicory"
 SUPPLIER_NAME = "Anandapur Kheda Chicory Producers Company Ltd"
 CUSTOMER_NAME = "ITC Limited"
+TRANSPORTER_NAME = "VRL Logistics Ltd"
+WEIGHBRIDGE_OPERATOR = "Anil Sharma"
+UNLOADING_WORKER = "Mahesh Yadav"
 RAW_WH = "Raw Material - Cc"
 WIP_WH = "WIP Production - Cc"
 FG_WH = "Finished Goods - Cc"
@@ -140,6 +143,80 @@ def ensure_quality_parameter(client: FrappeRestClient, param_name: str) -> None:
 		)
 
 
+def resolve_employee(client: FrappeRestClient, first_name: str) -> str:
+	name = client.get_value("Employee", {"first_name": first_name, "company": COMPANY, "status": "Active"}, "name")
+	if not name:
+		name = client.get_list(
+			"Employee",
+			filters={"first_name": first_name, "company": COMPANY},
+			fields=["name"],
+			order_by="creation desc",
+		)[0]["name"]
+	return name
+
+
+def create_chicory_root_inward(
+	client: FrappeRestClient,
+	*,
+	today: str,
+	supplier: str,
+	transporter: str,
+	root_batch_id: str,
+	purchase_receipt: str,
+	landed_cost_voucher: str,
+) -> dict:
+	operator = resolve_employee(client, WEIGHBRIDGE_OPERATOR)
+	unloading_worker = resolve_employee(client, UNLOADING_WORKER)
+	gross_weight = 5200.0
+	tare_weight = 5000.0
+	net_weight = 200.0
+	payable_weight = 200.0
+	rate_per_kg = 40.0
+	material_amount = payable_weight * rate_per_kg
+	freight_amount = 800.0
+	loading_charges = 200.0
+	unloading_charges = 100.0
+	total_landed_cost = freight_amount + loading_charges + unloading_charges
+	net_payable_to_farmer = material_amount
+
+	doc = client.insert(
+		{
+			"doctype": "Chicory Root Inward",
+			"naming_series": "CRI-.YYYY.-.#####",
+			"company": COMPANY,
+			"supplier": supplier,
+			"posting_date": today,
+			"vehicle_no": "GJ-06-RM-4521",
+			"operator": operator,
+			"unloading_worker": unloading_worker,
+			"item_code": ROOT_ITEM,
+			"warehouse": RAW_WH,
+			"batch_no": root_batch_id,
+			"purchase_receipt": purchase_receipt,
+			"landed_cost_voucher": landed_cost_voucher,
+			"gross_weight": gross_weight,
+			"tare_weight": tare_weight,
+			"net_weight": net_weight,
+			"mud_deduction_pct": 0.0,
+			"moisture_deduction_pct": 0.0,
+			"deduction_weight": 0.0,
+			"payable_weight": payable_weight,
+			"rate_per_kg": rate_per_kg,
+			"material_amount": material_amount,
+			"transporter": transporter,
+			"freight_rate_type": "Fixed",
+			"freight_rate": freight_amount,
+			"freight_amount": freight_amount,
+			"loading_charges": loading_charges,
+			"unloading_charges": unloading_charges,
+			"freight_borne_by": "Company (Landed Cost)",
+			"net_payable_to_farmer": net_payable_to_farmer,
+			"total_landed_cost": total_landed_cost,
+		}
+	)
+	return client.submit(doc)
+
+
 def resolve_party_name(client: FrappeRestClient, doctype: str, display_name: str) -> str:
 	field = "supplier_name" if doctype == "Supplier" else "customer_name"
 	name = client.get_value(doctype, {field: display_name}, "name")
@@ -152,6 +229,7 @@ def seed_purchase_to_delivery(client: FrappeRestClient) -> dict:
 	today = client.today()
 	supplier = resolve_party_name(client, "Supplier", SUPPLIER_NAME)
 	customer = resolve_party_name(client, "Customer", CUSTOMER_NAME)
+	transporter = resolve_party_name(client, "Supplier", TRANSPORTER_NAME)
 
 	# 1 — Purchase Order
 	po = client.insert(
@@ -298,6 +376,16 @@ def seed_purchase_to_delivery(client: FrappeRestClient) -> dict:
 	lcv["items"] = [row for row in lcv.get("items", []) if row.get("item_code") == ROOT_ITEM]
 	lcv = client.save(lcv)
 	lcv = client.submit(lcv)
+
+	cri = create_chicory_root_inward(
+		client,
+		today=today,
+		supplier=supplier,
+		transporter=transporter,
+		root_batch_id=root_batch_id,
+		purchase_receipt=pr["name"],
+		landed_cost_voucher=lcv["name"],
+	)
 
 	# 4 — Work Order
 	bom = client.get_value(
@@ -517,6 +605,7 @@ def seed_purchase_to_delivery(client: FrappeRestClient) -> dict:
 	pe = client.submit(pe)
 
 	return {
+		"chicory_root_inward": cri["name"],
 		"purchase_order": po["name"],
 		"purchase_receipt": pr["name"],
 		"landed_cost_voucher": lcv["name"],
@@ -532,10 +621,56 @@ def seed_purchase_to_delivery(client: FrappeRestClient) -> dict:
 	}
 
 
+def seed_root_inward_from_latest_pr(client: FrappeRestClient) -> dict:
+	"""Submit one Chicory Root Inward linked to the latest submitted root purchase receipt."""
+	today = client.today()
+	supplier = resolve_party_name(client, "Supplier", SUPPLIER_NAME)
+	transporter = resolve_party_name(client, "Supplier", TRANSPORTER_NAME)
+	pr_rows = client.get_list(
+		"Purchase Receipt",
+		filters={"docstatus": 1, "company": COMPANY},
+		fields=["name", "posting_date"],
+		order_by="posting_date desc, creation desc",
+	)
+	if not pr_rows:
+		raise RuntimeError("No submitted Purchase Receipt found; run full seed first.")
+	pr = client.get_doc("Purchase Receipt", pr_rows[0]["name"])
+	root_line = next((row for row in pr.get("items", []) if row.get("item_code") == ROOT_ITEM), None)
+	if not root_line:
+		raise RuntimeError(f"No {ROOT_ITEM} line on purchase receipt {pr['name']}")
+	root_batch_id = root_line.get("batch_no")
+	if not root_batch_id:
+		raise RuntimeError("Purchase receipt has no batch on root item")
+
+	lcv_name = client.get_list(
+		"Landed Cost Voucher",
+		filters={"docstatus": 1, "company": COMPANY},
+		fields=["name"],
+		order_by="posting_date desc, creation desc",
+	)
+	lcv = lcv_name[0]["name"] if lcv_name else ""
+
+	cri = create_chicory_root_inward(
+		client,
+		today=today,
+		supplier=supplier,
+		transporter=transporter,
+		root_batch_id=root_batch_id,
+		purchase_receipt=pr["name"],
+		landed_cost_voucher=lcv,
+	)
+	return {"chicory_root_inward": cri["name"], "purchase_receipt": pr["name"], "batch_no": root_batch_id}
+
+
 def main() -> int:
 	parser = argparse.ArgumentParser(description="Clear site and seed Chicory data via REST API token")
 	parser.add_argument("--base-url", default="http://localhost:8003")
 	parser.add_argument("--token", required=True, help="API key pair as key:secret")
+	parser.add_argument(
+		"--root-inward-only",
+		action="store_true",
+		help="Create and submit Chicory Root Inward from the latest purchase receipt",
+	)
 	parser.add_argument(
 		"--skip-reset",
 		action="store_true",
@@ -549,6 +684,12 @@ def main() -> int:
 	args = parser.parse_args()
 
 	client = FrappeRestClient(args.base_url, args.token)
+
+	if args.root_inward_only:
+		result = seed_root_inward_from_latest_pr(client)
+		print(json.dumps(result, indent=2))
+		print("Chicory Root Inward submitted via API.")
+		return 0
 
 	if not args.skip_reset:
 		print("Clearing transactional data via API…")
