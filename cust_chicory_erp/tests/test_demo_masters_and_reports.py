@@ -115,7 +115,7 @@ class TestDemoMastersAndReports(IntegrationTestCase):
 		resolved = resolve_sidebar("Cust Chicory Erp", "Administrator")
 		self.assertIsNotNone(resolved)
 		first_item = resolved.items[0]
-		self.assertEqual(first_item.get("label"), "Dashboard")
+		self.assertEqual(first_item.get("label"), "Overall Dashboard")
 		self.assertEqual(first_item.get("link_type"), "Dashboard")
 		self.assertEqual(first_item.get("link_to"), "Chicory Manufacturing")
 
