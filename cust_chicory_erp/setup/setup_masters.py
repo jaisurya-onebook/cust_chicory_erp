@@ -700,35 +700,46 @@ def setup_chicory_dashboard_and_components():
 		})
 		ch3.insert(ignore_permissions=True)
 
-	# 7. Chart: Quality Inspection Verdicts (bar detail by status over time)
+	# 7. Chart: Quality Inspection Verdicts (daily bar — Accepted vs Rejected)
 	chart4_name = "Quality Inspection Verdicts"
 	chart4_values = {
 		"doctype": "Dashboard Chart",
 		"chart_name": chart4_name,
-		"chart_type": "Group By",
-		"document_type": "Quality Inspection",
-		"group_by_based_on": "status",
-		"group_by_type": "Count",
-		"based_on": "report_date",
-		"time_interval": "Monthly",
+		"chart_type": "Custom",
+		"source": "Chicory Quality Verdicts",
+		"time_interval": "Daily",
 		"timeseries": 1,
-		"timespan": "Last Year",
+		"timespan": "Last Month",
 		"type": "Bar",
 		"show_values_over_chart": 1,
 		"is_standard": 1,
 		"module": "Cust Chicory Erp",
 		"color": "#FF8C00",
 		"currency": "",
-		"aggregate_function_based_on": "",
-		"filters_json": json.dumps([["Quality Inspection", "docstatus", "=", 1]]),
+		"filters_json": "{}",
 	}
+	if not frappe.db.exists("Dashboard Chart Source", "Chicory Quality Verdicts"):
+		frappe.get_doc(
+			{
+				"doctype": "Dashboard Chart Source",
+				"name": "Chicory Quality Verdicts",
+				"source_name": "Chicory Quality Verdicts",
+				"module": "Cust Chicory Erp",
+				"timeseries": 1,
+			}
+		).insert(ignore_permissions=True)
 	if not frappe.db.exists("Dashboard Chart", chart4_name):
 		ch4 = frappe.get_doc(chart4_values)
 		ch4.insert(ignore_permissions=True)
 	else:
 		ch4 = frappe.get_doc("Dashboard Chart", chart4_name)
-		ch4.update(chart4_values)
-		ch4.save(ignore_permissions=True)
+		if ch4.chart_type != chart4_values["chart_type"]:
+			frappe.delete_doc("Dashboard Chart", chart4_name, force=1, ignore_permissions=True)
+			ch4 = frappe.get_doc(chart4_values)
+			ch4.insert(ignore_permissions=True)
+		else:
+			ch4.update(chart4_values)
+			ch4.save(ignore_permissions=True)
 
 	# 8. Chart: Low Stock (bar — on-hand qty for critical/low chicory items)
 	chart5_name = "Low Stock"
@@ -740,11 +751,22 @@ def setup_chicory_dashboard_and_components():
 		"type": "Bar",
 		"show_values_over_chart": 1,
 		"is_standard": 1,
+		"is_public": 1,
 		"module": "Cust Chicory Erp",
 		"color": "#E24C4C",
 		"currency": "",
 		"empty_state_message": "All chicory items are above low-stock thresholds.",
 		"filters_json": "{}",
+		"roles": [
+			{"role": "Stock User"},
+			{"role": "Stock Manager"},
+			{"role": "Manufacturing User"},
+			{"role": "Manufacturing Manager"},
+			{"role": "Purchase User"},
+			{"role": "Purchase Manager"},
+			{"role": "Sales User"},
+			{"role": "Sales Manager"},
+		],
 	}
 	if not frappe.db.exists("Dashboard Chart Source", "Chicory Low Stock"):
 		frappe.get_doc(
@@ -759,7 +781,11 @@ def setup_chicory_dashboard_and_components():
 		frappe.get_doc(chart5_values).insert(ignore_permissions=True)
 	else:
 		ch5 = frappe.get_doc("Dashboard Chart", chart5_name)
-		ch5.update(chart5_values)
+		chart5_update = {k: v for k, v in chart5_values.items() if k != "roles"}
+		ch5.update(chart5_update)
+		ch5.set("roles", [])
+		for role_row in chart5_values.get("roles") or []:
+			ch5.append("roles", role_row)
 		ch5.save(ignore_permissions=True)
 
 	# 9. Dashboard Document: Chicory Manufacturing
@@ -775,11 +801,11 @@ def setup_chicory_dashboard_and_components():
 		{"card": "Active Work Orders"},
 	]
 	expected_charts = [
+		{"chart": "Low Stock", "width": "Full"},
 		{"chart": "Chicory Root Inward", "width": "Half"},
 		{"chart": "Chicory Powder Production Output", "width": "Half"},
 		{"chart": "Chicory Powder Dispatches", "width": "Half"},
 		{"chart": "Quality Inspection Verdicts", "width": "Half"},
-		{"chart": "Low Stock", "width": "Full"},
 	]
 
 	if not frappe.db.exists("Dashboard", dash_name):
@@ -809,11 +835,11 @@ def setup_chicory_dashboard_and_components():
 		ws = frappe.get_doc("Workspace", "Chicory Food Manufacturing")
 		ws.charts = []
 		for c_name in [
+			"Low Stock",
 			"Chicory Root Inward",
 			"Chicory Powder Production Output",
 			"Chicory Powder Dispatches",
 			"Quality Inspection Verdicts",
-			"Low Stock",
 		]:
 			ws.append("charts", {"chart_name": c_name, "label": c_name})
 
@@ -827,11 +853,11 @@ def setup_chicory_dashboard_and_components():
 			{"id": "nc_hold", "type": "number_card", "data": {"number_card_name": "Roots on Quality Hold (Kg)", "col": 4}},
 
 			{"id": "hdr_charts", "type": "header", "data": {"text": "Production & Quality Analytics Dashboard", "level": 4, "col": 12}},
+			{"id": "ch_low", "type": "chart", "data": {"chart_name": "Low Stock", "col": 12}},
 			{"id": "ch_inward", "type": "chart", "data": {"chart_name": "Chicory Root Inward", "col": 6}},
 			{"id": "ch_mfg", "type": "chart", "data": {"chart_name": "Chicory Powder Production Output", "col": 6}},
 			{"id": "ch_sales", "type": "chart", "data": {"chart_name": "Chicory Powder Dispatches", "col": 6}},
 			{"id": "ch_qa", "type": "chart", "data": {"chart_name": "Quality Inspection Verdicts", "col": 6}},
-			{"id": "ch_low", "type": "chart", "data": {"chart_name": "Low Stock", "col": 12}},
 
 			{"id": "hdr_sc", "type": "header", "data": {"text": "Quick Operations (13 Stages)", "level": 4, "col": 12}},
 			{"id": "sc_0", "type": "shortcut", "data": {"shortcut_name": "New Chicory Root Inward Slip", "col": 3}},

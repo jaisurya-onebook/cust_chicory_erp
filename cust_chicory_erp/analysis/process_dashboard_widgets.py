@@ -152,15 +152,16 @@ def get_powder_by_category(category: str = "All"):
 
 
 def get_low_stock_bar_rows():
-	"""Rows for the Low Stock dashboard bar chart (critical + low items only)."""
+	"""Rows for the Low Stock dashboard bar chart (low/critical first, else lowest on-hand)."""
 	rows = []
 	rows.extend(get_raw_roots_by_category("All"))
 	rows.extend(get_packaging_by_category("All"))
 	rows.extend(get_powder_by_category("All"))
+	rows.sort(key=lambda x: (x.get("priority", 2), x.get("stock_qty", 0)))
 	low_rows = [r for r in rows if r.get("priority", 2) <= 1]
-	low_rows.sort(key=lambda x: (x.get("priority", 2), x.get("stock_qty", 0)))
+	display_rows = low_rows[:12] if low_rows else rows[:12]
 	bar_rows = []
-	for row in low_rows[:12]:
+	for row in display_rows:
 		title = row.get("title") or ""
 		label = title.split(" - ", 1)[0] if " - " in title else title
 		bar_rows.append({"label": label, "stock_qty": row.get("stock_qty", 0)})

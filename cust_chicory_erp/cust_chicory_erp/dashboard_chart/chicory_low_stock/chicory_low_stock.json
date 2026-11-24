@@ -1,0 +1,17 @@
+{
+ "chart_name": "Low Stock",
+ "chart_type": "Custom",
+ "color": "#E24C4C",
+ "doctype": "Dashboard Chart",
+ "document_type": "",
+ "empty_state_message": "All chicory items are above low-stock thresholds.",
+ "filters_json": "{}",
+ "is_standard": 1,
+ "module": "Cust Chicory Erp",
+ "name": "Low Stock",
+ "show_values_over_chart": 1,
+ "source": "Chicory Low Stock",
+ "timeseries": 0,
+ "type": "Bar",
+ "use_report_chart": 0
+}

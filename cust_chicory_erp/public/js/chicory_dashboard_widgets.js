@@ -3,7 +3,13 @@ frappe.provide("frappe.dashboards.chart_sources");
 
 frappe.dashboards.chart_sources["Chicory Low Stock"] = {
 	method:
-		"cust_chicory_erp.cust_chicory_erp.dashboard_chart_source.chicory_low_stock.chicory_low_stock.get",
+		"cust_chicory_erp.dashboard_chart_source.chicory_low_stock.chicory_low_stock.get",
+	filters: [],
+};
+
+frappe.dashboards.chart_sources["Chicory Quality Verdicts"] = {
+	method:
+		"cust_chicory_erp.dashboard_chart_source.chicory_quality_verdicts.chicory_quality_verdicts.get",
 	filters: [],
 };
 

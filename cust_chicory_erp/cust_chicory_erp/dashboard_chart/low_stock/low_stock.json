@@ -1,0 +1,56 @@
+{
+ "chart_name": "Low Stock",
+ "chart_type": "Custom",
+ "color": "#E24C4C",
+ "creation": "2026-11-24 16:05:58.388694",
+ "currency": "",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "empty_state_message": "All chicory items are above low-stock thresholds.",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "last_synced_on": "2026-11-24 16:09:14.918282",
+ "modified": "2026-11-24 16:10:28.597367",
+ "modified_by": "Administrator",
+ "module": "Cust Chicory Erp",
+ "name": "Low Stock",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "roles": [
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "Stock Manager"
+  },
+  {
+   "role": "Manufacturing User"
+  },
+  {
+   "role": "Manufacturing Manager"
+  },
+  {
+   "role": "Purchase User"
+  },
+  {
+   "role": "Purchase Manager"
+  },
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Sales Manager"
+  }
+ ],
+ "show_values_over_chart": 1,
+ "source": "Chicory Low Stock",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "y_axis": []
+}

@@ -156,9 +156,9 @@ after_migrate = "cust_chicory_erp.setup.custom_fields.setup_custom_fields"
 # 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
 # }
 #
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
+has_permission = {
+	"Dashboard Chart": "cust_chicory_erp.overrides.dashboard_chart.has_permission",
+}
 
 # Document Events
 # ---------------

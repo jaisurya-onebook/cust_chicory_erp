@@ -27,6 +27,10 @@
  ],
  "charts": [
   {
+   "chart": "Low Stock",
+   "width": "Full"
+  },
+  {
    "chart": "Chicory Root Inward",
    "width": "Half"
   },
@@ -41,10 +45,6 @@
   {
    "chart": "Quality Inspection Verdicts",
    "width": "Half"
-  },
-  {
-   "chart": "Low Stock",
-   "width": "Full"
   }
  ],
  "creation": "2026-11-24 14:31:52.214304",
@@ -54,7 +54,7 @@
  "idx": 0,
  "is_default": 1,
  "is_standard": 1,
- "modified": "2026-11-24 16:05:58.454826",
+ "modified": "2026-11-24 16:10:28.849101",
  "modified_by": "Administrator",
  "module": "Cust Chicory Erp",
  "name": "Chicory Manufacturing",
