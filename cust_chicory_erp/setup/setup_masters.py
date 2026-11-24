@@ -539,8 +539,11 @@ def setup_chicory_dashboard_and_components():
 		})
 		c2.insert(ignore_permissions=True)
 
-	# 3. Chart: Chicory Root Inward Trends
-	chart1_name = "Chicory Root Inward Trends"
+	# 3. Chart: Chicory Root Inward
+	chart1_name = "Chicory Root Inward"
+	if frappe.db.exists("Dashboard Chart", "Chicory Root Inward Trends"):
+		frappe.delete_doc("Dashboard Chart", "Chicory Root Inward Trends", ignore_permissions=True, force=True)
+
 	if not frappe.db.exists("Dashboard Chart", chart1_name):
 		ch1 = frappe.get_doc({
 			"doctype": "Dashboard Chart",
@@ -641,20 +644,31 @@ def setup_chicory_dashboard_and_components():
 				{"card": "Roots on Quality Hold (Kg)"},
 			],
 			"charts": [
-				{"chart": "Chicory Root Inward Trends", "width": "Half"},
+				{"chart": "Chicory Root Inward", "width": "Half"},
 				{"chart": "Chicory Powder Production Output", "width": "Half"},
 				{"chart": "Chicory Powder Dispatches", "width": "Half"},
 				{"chart": "Quality Inspection Verdicts", "width": "Half"},
 			],
 		})
 		d.insert(ignore_permissions=True)
+	else:
+		dash = frappe.get_doc("Dashboard", dash_name)
+		dash.charts = []
+		for ch in [
+			{"chart": "Chicory Root Inward", "width": "Half"},
+			{"chart": "Chicory Powder Production Output", "width": "Half"},
+			{"chart": "Chicory Powder Dispatches", "width": "Half"},
+			{"chart": "Quality Inspection Verdicts", "width": "Half"},
+		]:
+			dash.append("charts", ch)
+		dash.save(ignore_permissions=True)
 
 	# 8. Workspace Content Update
 	if frappe.db.exists("Workspace", "Chicory Food Manufacturing"):
 		ws = frappe.get_doc("Workspace", "Chicory Food Manufacturing")
 		ws.charts = []
 		for c_name in [
-			"Chicory Root Inward Trends",
+			"Chicory Root Inward",
 			"Chicory Powder Production Output",
 			"Chicory Powder Dispatches",
 			"Quality Inspection Verdicts",
@@ -671,7 +685,7 @@ def setup_chicory_dashboard_and_components():
 			{"id": "nc_hold", "type": "number_card", "data": {"number_card_name": "Roots on Quality Hold (Kg)", "col": 4}},
 
 			{"id": "hdr_charts", "type": "header", "data": {"text": "Production & Quality Analytics Dashboard", "level": 4, "col": 12}},
-			{"id": "ch_inward", "type": "chart", "data": {"chart_name": "Chicory Root Inward Trends", "col": 6}},
+			{"id": "ch_inward", "type": "chart", "data": {"chart_name": "Chicory Root Inward", "col": 6}},
 			{"id": "ch_mfg", "type": "chart", "data": {"chart_name": "Chicory Powder Production Output", "col": 6}},
 			{"id": "ch_sales", "type": "chart", "data": {"chart_name": "Chicory Powder Dispatches", "col": 6}},
 			{"id": "ch_qa", "type": "chart", "data": {"chart_name": "Quality Inspection Verdicts", "col": 6}},
@@ -781,8 +795,8 @@ def verify_ui_setup():
 	print("✔ Number Card Total Raw Roots Inward (Kg) Result:", card_val)
 
 	from frappe.desk.doctype.dashboard_chart.dashboard_chart import get
-	ch_data = get(chart_name="Chicory Root Inward Trends")
-	print("✔ Chart Chicory Root Inward Trends Data Labels:", len(ch_data.get("labels", [])))
+	ch_data = get(chart_name="Chicory Root Inward")
+	print("✔ Chart Chicory Root Inward Data Labels:", len(ch_data.get("labels", [])))
 
 	from frappe.desk.doctype.sidebar.sidebar import get_sidebar_items
 	sb_items = get_sidebar_items("Cust Chicory Erp")

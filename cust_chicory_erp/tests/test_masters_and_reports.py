@@ -105,7 +105,7 @@ class TestMastersAndReports(IntegrationTestCase):
 		self.assertGreaterEqual(len(dash.charts), 4)
 
 		for ch in [
-			"Chicory Root Inward Trends",
+			"Chicory Root Inward",
 			"Chicory Powder Production Output",
 			"Chicory Powder Dispatches",
 			"Quality Inspection Verdicts",
